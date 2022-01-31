@@ -51,6 +51,8 @@ namespace Compilador.Core
         PutsPalabraReservada,
         GetsPalabraReservada,
         identificador,
+        MultiLinCommentPalabraReservada,
+        MultiLinEndPalabraReservada,
         FinaldelArchivo
     }
 }

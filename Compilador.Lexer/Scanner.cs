@@ -10,6 +10,7 @@ namespace Compilador.Lexer
     public class Scanner : IScanner
     {
         private Input input;
+        private Input inputAux;
         private readonly ILogger logger;
         private readonly Dictionary<string, TokenType> keywords;
 
@@ -37,8 +38,9 @@ namespace Compilador.Lexer
                 ["initialize"] = TokenType.InitializePalabraReservada,
                 ["new"] = TokenType.NewPalabraReservada,
                 ["puts"] = TokenType.PutsPalabraReservada,
-                ["gets"] = TokenType.GetsPalabraReservada
-
+                ["gets"] = TokenType.GetsPalabraReservada,
+                ["=begin"] = TokenType.MultiLinCommentPalabraReservada,
+                ["=end"] = TokenType.MultiLinEndPalabraReservada
             };
         }
 
@@ -178,6 +180,11 @@ namespace Compilador.Lexer
                             lexeme.Append(currentChar);
                             return BuildToken(lexeme.ToString(), TokenType.IgualDoble);
                         }
+                        if (PeekIfComment()=="begin")
+                        {
+                            lexeme.Append(GetIfComment());
+                            return BuildToken(lexeme.ToString(), TokenType.MultiLinCommentPalabraReservada);
+                        }
                         return BuildToken(lexeme.ToString(), TokenType.IgualAsignacion);
                     case '$':
                         lexeme.Append(currentChar);
@@ -276,6 +283,65 @@ namespace Compilador.Lexer
         {
             var next = input.NextChar();
             return next.Value;
+        }
+
+        private void CopyInput()
+        {
+            inputAux = input;
+        }
+
+        private char GetNextCharAux()
+        {
+            var next = inputAux.NextChar();
+            inputAux = next.Reminder;
+            return next.Value;
+        }
+
+        private char PeekNextCharAux()
+        {
+            var next = inputAux.NextChar();
+            return next.Value;
+        }
+
+        private string PeekIfComment()
+        {
+            CopyInput();
+            char currentChar;
+            var lexeme = new StringBuilder();
+            var nextChar = this.PeekNextCharAux();
+            if (nextChar == 'b')
+            {
+                var lexAux = new StringBuilder();
+                currentChar = this.GetNextCharAux();
+                lexAux.Append(currentChar);
+                for (int i = 0; i < 4; i++)
+                {
+                    currentChar = this.GetNextCharAux();
+                    lexAux.Append(currentChar);
+                }
+                if (lexAux.ToString() == "begin")
+                {
+                    lexeme.Append(lexAux.ToString());
+                }
+            }
+            return lexeme.ToString();
+        }
+
+        private string GetIfComment()
+        {
+            char currentChar;
+            var lexeme = new StringBuilder();
+            //lexeme.Append('=');
+            var nextChar = this.PeekNextChar();
+            string lex = lexeme.ToString();
+            while (!lex.Contains("=end"))
+            {
+                currentChar = this.GetNextChar();
+                lexeme.Append(currentChar);
+                lex = lexeme.ToString();
+            }
+
+            return lexeme.ToString();
         }
     }
 }
