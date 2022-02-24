@@ -105,6 +105,9 @@ namespace Compilador.Lexer
                 {
                     case '\0':
                         return BuildToken("\0", TokenType.FinaldelArchivo);
+                    case '.':
+                        lexeme.Append(currentChar);
+                        return BuildToken(lexeme.ToString(), TokenType.Punto);
                     case '+':
                         lexeme.Append(currentChar);
                         var nextChar = this.PeekNextChar();

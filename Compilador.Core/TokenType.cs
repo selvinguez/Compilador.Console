@@ -53,6 +53,7 @@ namespace Compilador.Core
         identificador,
         MultiLinCommentPalabraReservada,
         MultiLinEndPalabraReservada,
+        Punto,
         FinaldelArchivo
     }
 }

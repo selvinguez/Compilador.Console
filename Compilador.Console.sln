@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compilador.Core", "Compilad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compilador.Lexer", "Compilador.Lexer\Compilador.Lexer.csproj", "{7D90A480-FF74-4092-9D8D-4F705BA50FF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compilador.Infrastructure", "Compilador.Infrastructure\Compilador.Infrastructure.csproj", "{0C4FBF47-CFF8-4CDE-B90F-D4209D2F2C52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compilador.Infrastructure", "Compilador.Infrastructure\Compilador.Infrastructure.csproj", "{0C4FBF47-CFF8-4CDE-B90F-D4209D2F2C52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Compilador.Parser", "Compilador.Parser\Compilador.Parser.csproj", "{D2DC24E3-F5DB-48E3-A93D-4EB9694CC2D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{0C4FBF47-CFF8-4CDE-B90F-D4209D2F2C52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C4FBF47-CFF8-4CDE-B90F-D4209D2F2C52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C4FBF47-CFF8-4CDE-B90F-D4209D2F2C52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2DC24E3-F5DB-48E3-A93D-4EB9694CC2D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2DC24E3-F5DB-48E3-A93D-4EB9694CC2D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2DC24E3-F5DB-48E3-A93D-4EB9694CC2D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2DC24E3-F5DB-48E3-A93D-4EB9694CC2D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
