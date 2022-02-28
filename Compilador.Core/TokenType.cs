@@ -54,6 +54,9 @@ namespace Compilador.Core
         MultiLinCommentPalabraReservada,
         MultiLinEndPalabraReservada,
         Punto,
-        FinaldelArchivo
+        FinaldelArchivo,
+        chompPalabraReservada,
+        to_iPalabraReservada,
+        to_SPalabraReservada,
     }
 }

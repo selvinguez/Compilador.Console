@@ -34,7 +34,7 @@ namespace Compilador.Parser
             Decls();
             Stmts();
             //Methods();
-            //this.Match(TokenType.FinaldelArchivo);
+           // this.Match(TokenType.FinaldelArchivo);
         }
         private void Decls()
         {
@@ -51,8 +51,35 @@ namespace Compilador.Parser
             this.Match(TokenType.identificador);
             //=
             this.Match(TokenType.IgualAsignacion);
-            //valor
-            Valor();
+            
+            if (this.lookAhead.TokenType == TokenType.GetsPalabraReservada)
+            {//gets
+                this.Match(TokenType.GetsPalabraReservada);
+                //.
+                this.Match(TokenType.Punto);
+                //chomp
+                this.Match(TokenType.chompPalabraReservada);
+                //.
+                this.Match(TokenType.Punto);
+                //To int o To s
+                if (this.lookAhead.TokenType == TokenType.to_iPalabraReservada)
+                {
+                    //to int
+                    this.Match(TokenType.to_iPalabraReservada);
+                }
+                else
+                {
+                    //to string
+                    this.Match(TokenType.to_SPalabraReservada);
+                }
+            
+            }
+            else
+            {
+                //valor
+                Valor();
+            }
+
         }
         private void Valor()
         {
@@ -130,9 +157,9 @@ namespace Compilador.Parser
                     break;
                 case TokenType.WhilePalabraReservada:
                     this.Match(TokenType.WhilePalabraReservada);
-                    this.Match(TokenType.ParentesisIzq);
+                   // this.Match(TokenType.ParentesisIzq);
                     LogicalOrExpr();
-                    this.Match(TokenType.ParentesisDer);
+                    //this.Match(TokenType.ParentesisDer);
                     Stmt();
                     //this.Match(TokenType.EndPalabraReservada);
                     break;
@@ -154,6 +181,10 @@ namespace Compilador.Parser
                     this.Match(TokenType.DoPalabraReservada);
                     Stmt();
                     //this.Match(TokenType.EndPalabraReservada);
+                    break;
+                case TokenType.HashtagComentario:
+                    this.Match(TokenType.HashtagComentario);
+                    Stmt();
                     break;
                 default:
                     Block();

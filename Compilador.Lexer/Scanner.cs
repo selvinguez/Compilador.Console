@@ -40,7 +40,10 @@ namespace Compilador.Lexer
                 ["puts"] = TokenType.PutsPalabraReservada,
                 ["gets"] = TokenType.GetsPalabraReservada,
                 ["=begin"] = TokenType.MultiLinCommentPalabraReservada,
-                ["=end"] = TokenType.MultiLinEndPalabraReservada
+                ["=end"] = TokenType.MultiLinEndPalabraReservada,
+                ["chomp"] = TokenType.chompPalabraReservada,
+                ["to_i"] = TokenType.to_iPalabraReservada,
+                ["to_s"] = TokenType.to_SPalabraReservada,
             };
         }
 
@@ -59,7 +62,7 @@ namespace Compilador.Lexer
                 {
                     lexeme.Append(currentChar);
                     currentChar = this.PeekNextChar();
-                    while (char.IsLetterOrDigit(currentChar))
+                    while (char.IsLetterOrDigit(currentChar) || currentChar=='_')
                     {
                         currentChar = this.GetNextChar();
                         lexeme.Append(currentChar);
@@ -206,6 +209,10 @@ namespace Compilador.Lexer
                         {
                             lexeme.Append(currentChar);
                             currentChar = GetNextChar();
+                            //if(currentChar == '#')
+                            //{
+
+                            //}
                         }
                         lexeme.Append(currentChar);
                         return BuildToken(lexeme.ToString(), TokenType.StringLiteral);
