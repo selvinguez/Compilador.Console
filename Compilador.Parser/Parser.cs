@@ -23,6 +23,7 @@ namespace Compilador.Parser
             Program();
         }
 
+
         private void Program()
         {
             Block();
@@ -32,8 +33,8 @@ namespace Compilador.Parser
         {
             Decls();
             Stmts();
-            Methods();
-            this.Match(TokenType.FinaldelArchivo);
+            //Methods();
+            //this.Match(TokenType.FinaldelArchivo);
         }
         private void Decls()
         {
@@ -83,7 +84,7 @@ namespace Compilador.Parser
         }
         private void Stmts()
         {
-            if (this.lookAhead.TokenType == TokenType.FinaldelArchivo)
+            if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
             {
                 return;
             }
@@ -104,7 +105,7 @@ namespace Compilador.Parser
                         this.Match(TokenType.DoPalabraReservada);
                         this.Match(TokenType.identificador);
                         Stmt();
-                        this.Match(TokenType.EndPalabraReservada);
+                        //this.Match(TokenType.EndPalabraReservada);
                     }
                     else
                     {
@@ -121,7 +122,7 @@ namespace Compilador.Parser
                     Stmt();
                     if (this.lookAhead.TokenType != TokenType.ElsePalabraReservada)
                     {
-                        this.Match(TokenType.EndPalabraReservada);
+                        //this.Match(TokenType.EndPalabraReservada);
                         break;
                     }
                     this.Match(TokenType.ElsePalabraReservada);
@@ -133,7 +134,7 @@ namespace Compilador.Parser
                     LogicalOrExpr();
                     this.Match(TokenType.ParentesisDer);
                     Stmt();
-                    this.Match(TokenType.EndPalabraReservada);
+                    //this.Match(TokenType.EndPalabraReservada);
                     break;
                 case TokenType.PutsPalabraReservada:
                     this.Match(TokenType.PutsPalabraReservada);
@@ -143,7 +144,7 @@ namespace Compilador.Parser
                     this.Match(TokenType.LoopPalabraReservada);
                     this.Match(TokenType.DoPalabraReservada);
                     Stmt();
-                    this.Match(TokenType.EndPalabraReservada);
+                    //this.Match(TokenType.EndPalabraReservada);
                     break;
                 case TokenType.ForPalabraReservada:
                     this.Match(TokenType.ForPalabraReservada);
@@ -152,7 +153,7 @@ namespace Compilador.Parser
                     this.Match(TokenType.identificador);
                     this.Match(TokenType.DoPalabraReservada);
                     Stmt();
-                    this.Match(TokenType.EndPalabraReservada);
+                    //this.Match(TokenType.EndPalabraReservada);
                     break;
                 default:
                     Block();
@@ -161,10 +162,15 @@ namespace Compilador.Parser
         }
         private void Methods()
         {
+            if (this.lookAhead.TokenType == TokenType.FinaldelArchivo)
+            {
+                return;
+            }
             this.Match(TokenType.DefPalabraReservada);
             this.Match(TokenType.identificador);
             Stmt();
             this.Match(TokenType.EndPalabraReservada);
+
         }
         private void Params()
         {
@@ -304,6 +310,7 @@ namespace Compilador.Parser
                 throw new ApplicationException($"Syntax Error! expected token {expectedTokenType} but found {this.lookAhead.TokenType} on line {this.lookAhead.Line} and column {this.lookAhead.Column}");
             }
             this.Move();
+            
         }
     }
 }
