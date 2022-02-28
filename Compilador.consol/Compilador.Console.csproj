@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Compilador.Infrastructure\Compilador.Infrastructure.csproj" />
     <ProjectReference Include="..\Compilador.Lexer\Compilador.Lexer.csproj" />
+    <ProjectReference Include="..\Compilador.Parser\Compilador.Parser.csproj" />
   </ItemGroup>
 
 </Project>
