@@ -31,7 +31,7 @@ namespace Compilador.Parser
 
         private void Block()
         {
-            Decls();
+          //  Decls();
             Stmts();
             //Methods();
            // this.Match(TokenType.FinaldelArchivo);
@@ -52,7 +52,7 @@ namespace Compilador.Parser
             //=
             this.Match(TokenType.IgualAsignacion);
             
-            //valor
+            //valor0
             Valor();
 
         }
@@ -103,22 +103,23 @@ namespace Compilador.Parser
             switch (this.lookAhead.TokenType)
             {
                 case TokenType.identificador:
-                    this.Match(TokenType.identificador);
-                    if (this.lookAhead.TokenType == TokenType.Punto)
-                    {
-                        this.Match(TokenType.Punto);
-                        this.Match(TokenType.EachPalabraReservada);
-                        this.Match(TokenType.DoPalabraReservada);
-                        this.Match(TokenType.identificador);
-                        Stmt();
-                        //this.Match(TokenType.EndPalabraReservada);
-                    }
-                    else
-                    {
-                        this.Match(TokenType.IgualAsignacion);
-                        AssignmentExpr();
-                    }
-                    
+                    // this.Match(TokenType.identificador);
+                     /*if (this.lookAhead.TokenType == TokenType.Punto)
+                     {
+                         this.Match(TokenType.Punto);
+                         this.Match(TokenType.EachPalabraReservada);
+                         this.Match(TokenType.DoPalabraReservada);
+                         this.Match(TokenType.identificador);
+                         Stmt();
+                         //this.Match(TokenType.EndPalabraReservada);
+                     }
+                     else
+                     {*/
+                        Decls();    
+                    // }
+                        
+
+
                     break;
                 case TokenType.IfPalabraReservada:
                     this.Match(TokenType.IfPalabraReservada);
