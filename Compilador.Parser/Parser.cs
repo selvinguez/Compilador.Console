@@ -49,12 +49,23 @@ namespace Compilador.Parser
         {
             //id
             this.Match(TokenType.identificador);
-            //=
-            this.Match(TokenType.IgualAsignacion);
-            
-            //valor0
-            Valor();
+            //.
+            if (this.lookAhead.TokenType == TokenType.Punto)
+            {
+                this.Match(TokenType.Punto);
+                this.Match(TokenType.EachPalabraReservada);
+                this.Match(TokenType.DoPalabraReservada);
+                this.Match(TokenType.identificador);
+                Stmt();
+            }
+            else
+            {
+                //=
+                this.Match(TokenType.IgualAsignacion);
 
+                //valor
+                Valor();
+            }
         }
         private void Valor()
         {
@@ -62,12 +73,18 @@ namespace Compilador.Parser
             {
                 case TokenType.NumerosLiteral:
                     this.Match(TokenType.NumerosLiteral);
+                    AssignmentExpr();
                     break;
                 case TokenType.StringLiteral:
                     this.Match(TokenType.StringLiteral);
+                    AssignmentExpr();
                     break;
                 case TokenType.GetsPalabraReservada:
                     this.Match(TokenType.GetsPalabraReservada);
+                    break;
+                case TokenType.identificador:
+                    this.Match(TokenType.identificador);
+                    AssignmentExpr();
                     break;
                
                 case TokenType.CorcheteIzq:
@@ -103,21 +120,14 @@ namespace Compilador.Parser
             switch (this.lookAhead.TokenType)
             {
                 case TokenType.identificador:
-                    // this.Match(TokenType.identificador);
-                     /*if (this.lookAhead.TokenType == TokenType.Punto)
-                     {
-                         this.Match(TokenType.Punto);
-                         this.Match(TokenType.EachPalabraReservada);
-                         this.Match(TokenType.DoPalabraReservada);
-                         this.Match(TokenType.identificador);
-                         Stmt();
-                         //this.Match(TokenType.EndPalabraReservada);
-                     }
-                     else
-                     {*/
-                        Decls();    
-                    // }
+                   
+                        Decls();
+              /* else
+                    {
                         
+                        AssignmentExpr();
+                    }
+              */
 
 
                     break;
@@ -234,7 +244,7 @@ namespace Compilador.Parser
         private void Eq()
         {
             Rel();
-            while (this.lookAhead.TokenType == TokenType.IgualDoble)
+            while (this.lookAhead.TokenType == TokenType.IgualDoble  || this.lookAhead.TokenType == TokenType.Distinto)
             {
                 this.Move();
                 Rel();
@@ -268,7 +278,8 @@ namespace Compilador.Parser
         private void Term()
         {
             PostFixExpr();
-            while (this.lookAhead.TokenType == TokenType.Multiplicacion || this.lookAhead.TokenType == TokenType.Division)
+            while (this.lookAhead.TokenType == TokenType.Multiplicacion || this.lookAhead.TokenType == TokenType.Division
+                || this.lookAhead.TokenType == TokenType.Porcentaje)
             {
                 this.Move();
                 PostFixExpr();
