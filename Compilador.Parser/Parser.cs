@@ -31,8 +31,15 @@ namespace Compilador.Parser
 
         private void Block()
         {
-          //  Decls();
-            Stmts();
+            //  Decls();
+            if (this.lookAhead.TokenType == TokenType.DefPalabraReservada)
+            {
+                Methods();
+            }
+            else
+            {
+                Stmts();
+            }
             //Methods();
            // this.Match(TokenType.FinaldelArchivo);
         }
@@ -120,17 +127,9 @@ namespace Compilador.Parser
             switch (this.lookAhead.TokenType)
             {
                 case TokenType.identificador:
-                   
                         Decls();
-              /* else
-                    {
-                        
-                        AssignmentExpr();
-                    }
-              */
-
-
                     break;
+               
                 case TokenType.IfPalabraReservada:
                     this.Match(TokenType.IfPalabraReservada);
                     this.Match(TokenType.ParentesisIzq);
@@ -183,15 +182,33 @@ namespace Compilador.Parser
         }
         private void Methods()
         {
-            if (this.lookAhead.TokenType == TokenType.FinaldelArchivo)
+            if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
             {
                 return;
             }
             this.Match(TokenType.DefPalabraReservada);
             this.Match(TokenType.identificador);
+            if(this.lookAhead.TokenType == TokenType.ParentesisIzq)
+            {
+                this.Match(TokenType.ParentesisIzq);
+                parametroDef();
+                this.Match(TokenType.ParentesisDer);
+            }
             Stmt();
-            this.Match(TokenType.EndPalabraReservada);
+            //this.Match(TokenType.EndPalabraReservada);
 
+        }
+        private void parametroDef()
+        {
+            if(this.lookAhead.TokenType == TokenType.identificador)
+            {
+                this.Match(TokenType.identificador);
+                if(this.lookAhead.TokenType== TokenType.Comma)
+                {
+                    this.Match(TokenType.Comma);
+                    parametroDef();
+                }
+            }
         }
         private void Params()
         {
