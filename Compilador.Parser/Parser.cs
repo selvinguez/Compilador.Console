@@ -31,15 +31,15 @@ namespace Compilador.Parser
 
         private void Block()
         {
-            //  Decls();
-            if (this.lookAhead.TokenType == TokenType.DefPalabraReservada)
+             // Decls();
+            /*if (this.lookAhead.TokenType == TokenType.DefPalabraReservada)
             {
                 Methods();
             }
             else
-            {
+            {*/
                 Stmts();
-            }
+            //}
             //Methods();
            // this.Match(TokenType.FinaldelArchivo);
         }
@@ -72,6 +72,7 @@ namespace Compilador.Parser
 
                 //valor
                 Valor();
+                
             }
         }
         private void Valor()
