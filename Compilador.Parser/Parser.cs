@@ -81,18 +81,27 @@ namespace Compilador.Parser
             {
                 case TokenType.NumerosLiteral:
                     this.Match(TokenType.NumerosLiteral);
-                    AssignmentExpr();
+                    if (this.lookAhead.TokenType != TokenType.identificador )
+                    {
+                         AssignmentExpr();
+                    }
                     break;
                 case TokenType.StringLiteral:
                     this.Match(TokenType.StringLiteral);
-                    AssignmentExpr();
+                    if (this.lookAhead.TokenType != TokenType.identificador)
+                    {
+                        AssignmentExpr();
+                    }
                     break;
                 case TokenType.GetsPalabraReservada:
                     this.Match(TokenType.GetsPalabraReservada);
                     break;
                 case TokenType.identificador:
                     this.Match(TokenType.identificador);
-                    AssignmentExpr();
+                    if (this.lookAhead.TokenType != TokenType.identificador )
+                    {
+                        AssignmentExpr();
+                    }
                     break;
                
                 case TokenType.CorcheteIzq:
@@ -129,7 +138,6 @@ namespace Compilador.Parser
             {
                 case TokenType.identificador:
                         Decls();
-                        
                     break;
                
                 case TokenType.IfPalabraReservada:
@@ -156,7 +164,8 @@ namespace Compilador.Parser
                     break;
                 case TokenType.PutsPalabraReservada:
                     this.Match(TokenType.PutsPalabraReservada);
-                    Params();
+                    this.Match(TokenType.StringLiteral);
+                    Stmt();
                     break;
                 case TokenType.LoopPalabraReservada:
                     this.Match(TokenType.LoopPalabraReservada);
