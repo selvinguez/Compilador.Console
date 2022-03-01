@@ -128,6 +128,7 @@ namespace Compilador.Parser
             {
                 case TokenType.identificador:
                         Decls();
+                        
                     break;
                
                 case TokenType.IfPalabraReservada:
@@ -138,7 +139,7 @@ namespace Compilador.Parser
                     Stmt();
                     if (this.lookAhead.TokenType != TokenType.ElsePalabraReservada)
                     {
-                        //this.Match(TokenType.EndPalabraReservada);
+                       
                         break;
                     }
                     this.Match(TokenType.ElsePalabraReservada);
@@ -146,11 +147,11 @@ namespace Compilador.Parser
                     break;
                 case TokenType.WhilePalabraReservada:
                     this.Match(TokenType.WhilePalabraReservada);
-                   // this.Match(TokenType.ParentesisIzq);
+                  
                     LogicalOrExpr();
-                    //this.Match(TokenType.ParentesisDer);
+                    
                     Stmt();
-                    //this.Match(TokenType.EndPalabraReservada);
+                 
                     break;
                 case TokenType.PutsPalabraReservada:
                     this.Match(TokenType.PutsPalabraReservada);
@@ -169,7 +170,7 @@ namespace Compilador.Parser
                     this.Match(TokenType.identificador);
                     this.Match(TokenType.DoPalabraReservada);
                     Stmt();
-                    //this.Match(TokenType.EndPalabraReservada);
+                    this.Match(TokenType.EndPalabraReservada);
                     break;
                 case TokenType.HashtagComentario:
                     this.Match(TokenType.HashtagComentario);
