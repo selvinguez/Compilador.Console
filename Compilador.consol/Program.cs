@@ -16,7 +16,7 @@ namespace Compilador.Console
             var scanner = new Scanner(new Input(fileContent), logger);
            var parser = new Parser.Parser(scanner, logger);
            parser.Parse();
-           /* var token = scanner.GetNextToken();
+           /*var token = scanner.GetNextToken();
             while (token.TokenType != Core.TokenType.FinaldelArchivo)
             {
                 logger.Info(token.ToString());

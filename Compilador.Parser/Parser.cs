@@ -44,7 +44,7 @@ namespace Compilador.Parser
                 Decls();
             }
         }
-
+      
         private void Decl()
         {
             //id
@@ -52,33 +52,8 @@ namespace Compilador.Parser
             //=
             this.Match(TokenType.IgualAsignacion);
             
-            if (this.lookAhead.TokenType == TokenType.GetsPalabraReservada)
-            {//gets
-                this.Match(TokenType.GetsPalabraReservada);
-                //.
-                this.Match(TokenType.Punto);
-                //chomp
-                this.Match(TokenType.chompPalabraReservada);
-                //.
-                this.Match(TokenType.Punto);
-                //To int o To s
-                if (this.lookAhead.TokenType == TokenType.to_iPalabraReservada)
-                {
-                    //to int
-                    this.Match(TokenType.to_iPalabraReservada);
-                }
-                else
-                {
-                    //to string
-                    this.Match(TokenType.to_SPalabraReservada);
-                }
-            
-            }
-            else
-            {
-                //valor
-                Valor();
-            }
+            //valor
+            Valor();
 
         }
         private void Valor()
@@ -91,6 +66,10 @@ namespace Compilador.Parser
                 case TokenType.StringLiteral:
                     this.Match(TokenType.StringLiteral);
                     break;
+                case TokenType.GetsPalabraReservada:
+                    this.Match(TokenType.GetsPalabraReservada);
+                    break;
+               
                 case TokenType.CorcheteIzq:
                     this.Match(TokenType.CorcheteIzq);
                     Valor();
