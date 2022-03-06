@@ -58,5 +58,6 @@ namespace Compilador.Core
         chompPalabraReservada,
         to_iPalabraReservada,
         to_SPalabraReservada,
+        BasicType,
     }
 }

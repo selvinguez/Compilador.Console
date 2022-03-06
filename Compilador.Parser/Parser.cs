@@ -160,7 +160,7 @@ namespace Compilador.Parser
                     LogicalOrExpr();
                     
                     Stmt();
-                 
+
                     break;
                 case TokenType.PutsPalabraReservada:
                     this.Match(TokenType.PutsPalabraReservada);
