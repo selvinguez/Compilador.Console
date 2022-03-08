@@ -252,15 +252,15 @@ namespace Compilador.Lexer
                         continue;
                     case '|':
                         lexeme.Append(currentChar);
-                        currentChar = GetNextChar();
+                        currentChar = PeekNextChar();
                         if (currentChar == '|')
                         {
+                            currentChar = GetNextChar();
                             lexeme.Append(currentChar);
                             return BuildToken(lexeme.ToString(), TokenType.Or);
                         }
-                        lexeme.Clear();
-                        logger.Error($"Expected | but {currentChar} was found, line ine: {this.input.Position.Line} and column: {this.input.Position.Column}");
-                        continue;
+                        return BuildToken(lexeme.ToString(), TokenType.pipe);
+                       
                     default:
                         break;
                 }

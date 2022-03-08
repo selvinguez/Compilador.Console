@@ -59,5 +59,7 @@ namespace Compilador.Core
         to_iPalabraReservada,
         to_SPalabraReservada,
         BasicType,
+        pipe
     }
+   
 }

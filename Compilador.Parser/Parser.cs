@@ -55,8 +55,10 @@ namespace Compilador.Parser
         private void Decl()
         {
             //id
-            this.Match(TokenType.identificador);
+             TokenType guardar = this.lookAhead.TokenType;
+             this.Match(TokenType.identificador);
             //.
+            
             if (this.lookAhead.TokenType == TokenType.Punto)
             {
                 this.Match(TokenType.Punto);
@@ -79,6 +81,7 @@ namespace Compilador.Parser
         {
             switch (this.lookAhead.TokenType)
             {
+
                 case TokenType.NumerosLiteral:
                     this.Match(TokenType.NumerosLiteral);
                     if (this.lookAhead.TokenType != TokenType.identificador )
