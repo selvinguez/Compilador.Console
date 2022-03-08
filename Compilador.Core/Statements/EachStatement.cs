@@ -23,7 +23,7 @@ namespace Compilador.Core.Statements
         {
             if (this.Arreiglo.GetExpressionType() == Types.Type.Number)
             {
-                throw new ApplicationException($"Expression inside while must be boolean");
+                throw new ApplicationException($"Expression inside while must be Array");
             }
         }
     }
