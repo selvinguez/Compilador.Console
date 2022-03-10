@@ -7,15 +7,18 @@ namespace Compilador.Core.Statements
 {
     public class ForStatement : Statement
     {
-        public ForStatement(IdExpression arreglo, IdExpression numero)
+        public ForStatement(IdExpression arreglo, IdExpression numero, Statement statement)
         {
             Arreglo = arreglo;
             Indice = numero;
+            Statement = statement;
         }
 
         public IdExpression Arreglo { get; }
 
         public IdExpression Indice { get; }
+
+        public Statement Statement { get; }
         public override void ValidateSemantic()
         {
             if (this.Arreglo.GetExpressionType() != Types.Type.Number)
