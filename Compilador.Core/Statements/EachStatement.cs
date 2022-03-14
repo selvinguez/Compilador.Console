@@ -19,6 +19,11 @@ namespace Compilador.Core.Statements
        public IdExpression Arreiglo { get;  }
         public Statement Statement { get; }
 
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateSemantic()
         {
             if (this.Arreiglo.GetExpressionType() == Types.Type.Number)

@@ -19,6 +19,13 @@ namespace Compilador.Core.Expressions
             };
         }
 
+        public override string GenerateCode()
+        {
+            var leftCode = this.LeftExpression.GenerateCode();
+            var rightCode = this.RightExpression.GenerateCode();
+            return $"{leftCode} {this.Token.Lexeme} {rightCode}";
+        }
+
         public override Type GetExpressionType()
         {
             var leftType = LeftExpression.GetExpressionType();

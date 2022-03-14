@@ -5,6 +5,7 @@ namespace Compilador.Core.Types
     {
         public Type Of { get; }
 
+
         public Array(string lexeme, TokenType tokenType, Type of)
             : base(lexeme, tokenType)
         {

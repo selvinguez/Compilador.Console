@@ -11,6 +11,15 @@ namespace Compilador.Core.Expressions
         {
         }
 
+        public override string GenerateCode()
+        {
+            if (this.type == Type.String)
+            {
+                return Token.Lexeme.Replace("'", "\"");
+            }
+            return Token.Lexeme;
+        }
+
         public override Type GetExpressionType()
         {
             return type;

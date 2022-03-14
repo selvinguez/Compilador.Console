@@ -15,6 +15,10 @@ namespace Compilador.Core.Statements
         public IdExpression Id { get; }
         public TypedExpression Expression { get; }
 
+        public override string GenerateCode()
+        {
+            return $"{this.Id.GenerateCode()} = {this.Expression.GenerateCode()};{System.Environment.NewLine}";
+        }
         public override void ValidateSemantic()
         {
             if (this.Id.GetExpressionType() != Expression.GetExpressionType())

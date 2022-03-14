@@ -17,6 +17,11 @@ namespace Compilador.Core.Statements
         public Statement TrueStatement { get; }
         public Statement FalseStatement { get; }
 
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateSemantic()
         {
             if (this.Expression.GetExpressionType() != Types.Type.Bool)

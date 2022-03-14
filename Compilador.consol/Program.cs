@@ -14,8 +14,9 @@ namespace Compilador.Console
             var fileContent = File.ReadAllText("test.txt");
             var logger = new Logger();
             var scanner = new Scanner(new Input(fileContent), logger);
-           var parser = new Parser.Parser(scanner, logger);
-           parser.Parse();
+            var parser = new Parser.Parser(scanner, logger);
+            var code = parser.Parse();
+            File.WriteAllText("result.txt", code.GenerateCode());
            /*var token = scanner.GetNextToken();
             while (token.TokenType != Core.TokenType.FinaldelArchivo)
             {

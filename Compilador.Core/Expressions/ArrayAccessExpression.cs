@@ -21,5 +21,10 @@ namespace Compilador.Core.Expressions
         {
             return type;
         }
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

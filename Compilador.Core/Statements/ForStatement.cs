@@ -19,6 +19,12 @@ namespace Compilador.Core.Statements
         public IdExpression Indice { get; }
 
         public Statement Statement { get; }
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateSemantic()
         {
             if (this.Arreglo.GetExpressionType() != Types.Type.Number)

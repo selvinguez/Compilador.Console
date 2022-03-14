@@ -23,6 +23,12 @@ namespace Compilador.Core.Expressions
             };
         }
 
+        public override string GenerateCode()
+        {
+            return $"{this.LeftExpression.GenerateCode()} {this.Token.Lexeme} {this.RightExpression.GenerateCode()}";
+        }
+
+
         // a + b
         public override Type GetExpressionType()
         {

@@ -36,5 +36,10 @@ namespace Compilador.Core.Statements
                 throw new ApplicationException($"Type {Expression.GetExpressionType()} is not assignable to {Id.GetExpressionType()}");
             }
         }
+
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

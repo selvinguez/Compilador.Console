@@ -16,6 +16,11 @@ namespace Compilador.Core.Statements
 
         public IEnumerable<TypedExpression> Parameters { get; }
 
+        public override string GenerateCode()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateSemantic()
         {
             if (Parameters.Any(x => x.GetExpressionType() != Types.Type.String))

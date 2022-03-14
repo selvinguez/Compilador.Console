@@ -16,6 +16,7 @@ namespace Compilador.Core.Expressions
             this.type = type;
         }
 
+        public abstract string GenerateCode();
         public abstract Type GetExpressionType();
     }
 }
