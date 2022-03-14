@@ -18,7 +18,14 @@ namespace Compilador.Core.Statements
 
         public override string GenerateCode()
         {
-            throw new NotImplementedException();
+            var code = "Console.Writeline(";
+            foreach (var param in this.Parameters)
+            {
+                code += $"{param.GenerateCode()}";
+            }
+
+            code += ");";
+            return code;
         }
 
         public override void ValidateSemantic()

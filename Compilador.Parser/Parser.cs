@@ -46,6 +46,7 @@ namespace Compilador.Parser
             var statements = Stmts();
 
             var blockStatement = new BlockStatement(statements);
+            //EnvironmentManager.PopContext();
             return blockStatement;
             //}
             //Methods();
@@ -110,7 +111,7 @@ namespace Compilador.Parser
                     return null;
                 case TokenType.identificador:
                     var token = this.lookAhead;
-                    this.Match(TokenType.identificador);
+                    //this.Match(TokenType.identificador);
                     if (this.lookAhead.TokenType != TokenType.identificador )
                     {
                         //AssignmentExpr();
@@ -140,6 +141,13 @@ namespace Compilador.Parser
             {
                 return null;
             }
+            /*if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
+            {   
+                if (this.lookAhead.TokenType == TokenType.FinaldelArchivo)
+                {
+                    return null;
+                }
+            }*/
             return new SequenceStatement(Stmt(), Stmts());
         }
 
@@ -170,30 +178,30 @@ namespace Compilador.Parser
 
                 case TokenType.IfPalabraReservada:
                     this.Match(TokenType.IfPalabraReservada);
-                    this.Match(TokenType.ParentesisIzq);
+                    //this.Match(TokenType.ParentesisIzq);
                     var TypedExpression = LogicalOrExpr();
-                    this.Match(TokenType.ParentesisDer);
-                    var trueStatement = Stmt();
+                    //this.Match(TokenType.ParentesisDer);
+                    var trueStatement = Stmts();
                     if (this.lookAhead.TokenType != TokenType.ElsePalabraReservada)
                     {
                        
                         return new IfStatement(TypedExpression, trueStatement, null);
                     }
                     this.Match(TokenType.ElsePalabraReservada);
-                    var falseStatement = Stmt();
+                    var falseStatement = Stmts();
                     return new IfStatement(TypedExpression,trueStatement,falseStatement);
                 case TokenType.WhilePalabraReservada:
                     this.Match(TokenType.WhilePalabraReservada);
                   
                     TypedExpression = LogicalOrExpr();
                     
-                    return new WhileStatement(TypedExpression,Stmt());
+                    return new WhileStatement(TypedExpression,Stmts());
                 case TokenType.PutsPalabraReservada:
                     this.Match(TokenType.PutsPalabraReservada);
-                    this.Match(TokenType.StringLiteral);
-                    Stmt();
+                    var @params = Params();
+
                     //Ocupa Revisión
-                    return null;
+                    return new PrintStatement(@params);
                 case TokenType.LoopPalabraReservada:
                     this.Match(TokenType.LoopPalabraReservada);
                     this.Match(TokenType.DoPalabraReservada);
@@ -254,20 +262,24 @@ namespace Compilador.Parser
                 }
             }
         }
-        private void Params()
+        private IEnumerable<TypedExpression> Params()
         {
-            LogicalOrExpr();
-            ParamsPrime();
+            var @params = new List<TypedExpression>();
+            @params.Add(LogicalOrExpr());
+            @params.AddRange(ParamsPrime());
+            return @params;
         }
 
-        private void ParamsPrime()
+        private IEnumerable<TypedExpression> ParamsPrime()
         {
+            var @params = new List<TypedExpression>();
             if (this.lookAhead.TokenType == TokenType.Comma)
             {
                 this.Match(TokenType.Comma);
-                LogicalOrExpr();
-                ParamsPrime();
+                @params.Add(LogicalOrExpr());
+                @params.AddRange(ParamsPrime());
             }
+            return @params;
         }
 
         private Statement AssignmentStmt(IdExpression id, TypedExpression index)

@@ -18,11 +18,10 @@ namespace Compilador.Core.Statements
 
         public override string GenerateCode()
         {
-            /* var code = $"while({this.Expression.GenerateCode()}){{ {System.Environment.NewLine}";
+            var code = $"while({this.Expression.GenerateCode()}){{ {System.Environment.NewLine}";
              code += this.Statement.GenerateCode();
              code += System.Environment.NewLine;
-             code += "}";*/
-            var code = "hellooo";
+             code += "}";
             return code;
         }
 

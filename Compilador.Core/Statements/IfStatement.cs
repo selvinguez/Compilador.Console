@@ -19,7 +19,14 @@ namespace Compilador.Core.Statements
 
         public override string GenerateCode()
         {
-            throw new NotImplementedException();
+            var code = $"if({this.Expression.GenerateCode()}){{ {System.Environment.NewLine}";
+            code += this.TrueStatement.GenerateCode();
+            if (this.FalseStatement != null)
+            {
+                code += $"}}else{{{System.Environment.NewLine}{this.FalseStatement.GenerateCode()}{System.Environment.NewLine}";
+            }
+            code += "}";
+            return code;
         }
 
         public override void ValidateSemantic()
