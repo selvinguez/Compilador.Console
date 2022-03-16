@@ -103,9 +103,9 @@ namespace Compilador.Core
         {
             if (_symbolTable.ContainsKey(lexeme))
             {
-                throw new ApplicationException($"Symbol {lexeme} was previously defined in this scope");
-            }
-            _symbolTable.Add(lexeme, new Symbol(id, startValue));
+                //throw new ApplicationException($"Symbol {lexeme} was previously defined in this scope");
+            }else
+                _symbolTable.Add(lexeme, new Symbol(id, startValue));
         }
 
         public void UpdateSymbolValue(string symbolName, dynamic value)

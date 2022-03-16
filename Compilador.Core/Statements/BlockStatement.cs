@@ -15,10 +15,10 @@ namespace Compilador.Core.Statements
                 { "number", "int" },
                 { "string", "string" },
                 { "bool", "bool" },
+                { "gets", "var" }
             };
             this.ValidateSemantic();
         }
-
         public Statement Statement { get; }
 
         public override string GenerateCode()

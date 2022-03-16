@@ -17,6 +17,10 @@ namespace Compilador.Core.Expressions
             {
                 return Token.Lexeme.Replace("'", "\"");
             }
+            if (this.type == Type.Gets)
+            {
+                return "Console.Readline()";
+            }
             return Token.Lexeme;
         }
 

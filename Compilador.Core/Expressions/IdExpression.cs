@@ -6,13 +6,31 @@ namespace Compilador.Core.Expressions
 {
     public class IdExpression : TypedExpression
     {
+        private readonly Dictionary<string, string> _typeMapping;
         public IdExpression(Type type, Token token)
             : base(type, token)
         {
+            _typeMapping = new Dictionary<string, string>
+            {
+                { "number", "int" },
+                { "string", "string" },
+                { "bool", "bool" },
+            };
         }
 
         public override string GenerateCode()
         {
+            /*Console.WriteLine("Chekear");
+            foreach (var symbol in EnvironmentManager.GetSymbolsForCurrentContext())
+            {
+                Console.WriteLine("Lexema es: "+symbol.Id.Token.Lexeme);
+                if (symbol.Id.Token.Lexeme == Token.Lexeme)
+                {
+                    Console.WriteLine("Llego");
+                    return Token.Lexeme;
+                }
+            }
+            return $"{_typeMapping[type.Lexeme]} {Token.Lexeme}";*/
             return Token.Lexeme;
         }
         public override Type GetExpressionType()

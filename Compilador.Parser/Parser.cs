@@ -107,8 +107,8 @@ namespace Compilador.Parser
                     }*/
                     return Core.Types.Type.String;
                 case TokenType.GetsPalabraReservada:
-                    this.Match(TokenType.GetsPalabraReservada);
-                    return null;
+                    //this.Match(TokenType.GetsPalabraReservada);
+                    return Core.Types.Type.Gets;
                 case TokenType.identificador:
                     var token = this.lookAhead;
                     //this.Match(TokenType.identificador);
@@ -137,20 +137,21 @@ namespace Compilador.Parser
         }
         private Statement Stmts()
         {
-            if (this.lookAhead.TokenType == TokenType.EndPalabraReservada || this.lookAhead.TokenType == TokenType.FinaldelArchivo)
+            /*if (this.lookAhead.TokenType == TokenType.EndPalabraReservada || this.lookAhead.TokenType == TokenType.FinaldelArchivo)
+            {
+                return null;
+            }*/
+            if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
+            {
+                this.Match(TokenType.EndPalabraReservada);
+                return null;
+            }
+            if (this.lookAhead.TokenType == TokenType.FinaldelArchivo)
             {
                 return null;
             }
-            /*if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
-            {   
-                if (this.lookAhead.TokenType == TokenType.FinaldelArchivo)
-                {
-                    return null;
-                }
-            }*/
             return new SequenceStatement(Stmt(), Stmts());
         }
-
         private Statement Stmt()
         {
             switch (this.lookAhead.TokenType)
@@ -177,6 +178,7 @@ namespace Compilador.Parser
                     return stmt;
 
                 case TokenType.IfPalabraReservada:
+                    //EnvironmentManager.PushContext();
                     this.Match(TokenType.IfPalabraReservada);
                     //this.Match(TokenType.ParentesisIzq);
                     var TypedExpression = LogicalOrExpr();
@@ -189,12 +191,14 @@ namespace Compilador.Parser
                     }
                     this.Match(TokenType.ElsePalabraReservada);
                     var falseStatement = Stmts();
+                    //EnvironmentManager.PopContext();
                     return new IfStatement(TypedExpression,trueStatement,falseStatement);
                 case TokenType.WhilePalabraReservada:
+                    //EnvironmentManager.PushContext();
                     this.Match(TokenType.WhilePalabraReservada);
                   
                     TypedExpression = LogicalOrExpr();
-                    
+                    //EnvironmentManager.PopContext();
                     return new WhileStatement(TypedExpression,Stmts());
                 case TokenType.PutsPalabraReservada:
                     this.Match(TokenType.PutsPalabraReservada);
@@ -205,9 +209,8 @@ namespace Compilador.Parser
                 case TokenType.LoopPalabraReservada:
                     this.Match(TokenType.LoopPalabraReservada);
                     this.Match(TokenType.DoPalabraReservada);
-                    Stmt();
                     //this.Match(TokenType.EndPalabraReservada);
-                    return null;//arreglar
+                    return new LoopStatement(Stmts());//arreglar
                 case TokenType.ForPalabraReservada:
                     this.Match(TokenType.ForPalabraReservada);
                     var iter = this.lookAhead;
@@ -413,6 +416,10 @@ namespace Compilador.Parser
                     token = this.lookAhead;
                     this.Match(TokenType.FalsePalabraReservada);
                     return new ConstantExpression(Core.Types.Type.Bool, token);
+                case TokenType.GetsPalabraReservada:
+                    token = this.lookAhead;
+                    this.Match(TokenType.GetsPalabraReservada);
+                    return new ConstantExpression (Core.Types.Type.Gets, token);
                 default:
                     token = this.lookAhead;
                     this.Match(TokenType.identificador);
