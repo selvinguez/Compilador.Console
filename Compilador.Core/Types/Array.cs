@@ -5,11 +5,13 @@ namespace Compilador.Core.Types
     {
         public Type Of { get; }
 
+        public int Size { get; set; }
 
-        public Array(string lexeme, TokenType tokenType, Type of)
+        public Array(string lexeme, TokenType tokenType, Type of, int size)
             : base(lexeme, tokenType)
         {
             Of = of;
+            Size = size;
         }
     }
 }

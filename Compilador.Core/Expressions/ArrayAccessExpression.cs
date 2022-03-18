@@ -24,7 +24,7 @@ namespace Compilador.Core.Expressions
 
         public override string GenerateCode()
         {
-            throw new NotImplementedException();
+            return $"{this.Id.GenerateCode()}[{this.Index.GenerateCode()}]";
         }
     }
 }

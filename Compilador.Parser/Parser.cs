@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Compilador.Core;
 using Compilador.Core.Expressions;
 using Compilador.Core.Interfaces;
@@ -87,6 +88,29 @@ namespace Compilador.Parser
                 EnvironmentManager.Put(token.Lexeme, id, null);
             }
         }
+        private Core.Types.Type ValorArreglo()
+        {
+            switch (this.lookAhead.TokenType)
+            {
+
+                case TokenType.NumerosLiteral:
+                    this.Match(TokenType.NumerosLiteral); 
+                    /*if (this.lookAhead.TokenType != TokenType.identificador )
+                    {
+                         AssignmentExpr();
+                    }*/
+                    return Core.Types.Type.Number;
+                case TokenType.StringLiteral:
+                    this.Match(TokenType.StringLiteral);
+                    /*if (this.lookAhead.TokenType != TokenType.identificador)
+                    {
+                        AssignmentExpr();
+                    }*/
+                    return Core.Types.Type.String;
+                default:
+                    throw new ApplicationException($"Syntax error! Unrecognized type in line: {this.lookAhead.Line} and column: {this.lookAhead.Column}");
+            }
+        }
         private Core.Types.Type Valor()
         {
             switch (this.lookAhead.TokenType)
@@ -120,17 +144,17 @@ namespace Compilador.Parser
                     return simbolo.Id.GetExpressionType();
                 case TokenType.CorcheteIzq:
                     this.Match(TokenType.CorcheteIzq);
-                    var valor = Valor();
+                    var valor = ValorArreglo();
                     if (this.lookAhead.TokenType == TokenType.Comma)
                     {
                         this.Match(TokenType.Comma);
-                        Valor();
+                        ValorArreglo();
                     }
                     else
                     {
-                        this.Match( TokenType.CorcheteDer);
+                        //this.Match( TokenType.CorcheteDer);
                     }
-                    return new Core.Types.Array("[]", TokenType.ComplexType, valor);
+                    return new Core.Types.Array("[]", TokenType.ComplexType, valor, 0);
                 default:
                     throw new ApplicationException($"Syntax error! Unrecognized type in line: {this.lookAhead.Line} and column: {this.lookAhead.Column}");
             }
@@ -162,14 +186,44 @@ namespace Compilador.Parser
                     
                     this.Match(TokenType.identificador);
                     TypedExpression index = null;
-                    /*if (this.lookAhead.TokenType == TokenType.LeftBracket)
+                    if (this.lookAhead.TokenType == TokenType.CorcheteIzq)
                     {
-                        this.Match(TokenType.LeftBracket);
+                        this.Match(TokenType.CorcheteIzq);
                         index = LogicalOrExpr();
-                        this.Match(TokenType.RightBracket);
-                    }*/
+                        this.Match(TokenType.CorcheteDer);
+                    }
 
                     this.Match(TokenType.IgualAsignacion);
+                    if (this.lookAhead.TokenType == TokenType.CorcheteIzq)
+                    {
+                        List<int> list;
+                        List<string> listS;
+                        this.Match(TokenType.CorcheteIzq);
+                        if (this.lookAhead.TokenType == TokenType.NumerosLiteral)
+                        {
+                            list = new List<int>();
+                            while (true)
+                            {
+                                var tokenArr = this.lookAhead;
+                                this.Match(TokenType.NumerosLiteral);
+                                list.Add(int.Parse(tokenArr.Lexeme));
+                                if (this.lookAhead.TokenType == TokenType.Comma)
+                                {
+                                    this.Match(TokenType.Comma);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            this.Match(TokenType.CorcheteDer);
+                        }
+                        else
+                        {
+                            
+                        }
+                        
+                    }
                     var valor = Valor();
                     var id = new IdExpression(valor, token);
                     EnvironmentManager.Put(token.Lexeme, id, null);
@@ -420,6 +474,11 @@ namespace Compilador.Parser
                     token = this.lookAhead;
                     this.Match(TokenType.GetsPalabraReservada);
                     return new ConstantExpression (Core.Types.Type.Gets, token);
+                case TokenType.CorcheteDer:
+                    token = this.lookAhead;
+                    this.Match(TokenType.CorcheteDer);
+                    //return new ConstantExpression(Core.Types.Array.Number, token);
+                    return null;
                 default:
                     token = this.lookAhead;
                     this.Match(TokenType.identificador);
