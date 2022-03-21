@@ -217,10 +217,35 @@ namespace Compilador.Parser
                                 }
                             }
                             this.Match(TokenType.CorcheteDer);
+                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number, 0);
+                            var id2 = new IdExpression(tipo_arr, token);
+                            EnvironmentManager.Put(token.Lexeme, id2, null);
+                            var symbol2 = EnvironmentManager.Get(token.Lexeme);
+                            return new ArrayStatement(id2, list, null);
                         }
                         else
                         {
-                            
+                            listS = new List<string>();
+                            while (true)
+                            {
+                                var tokenArr = this.lookAhead;
+                                this.Match(TokenType.StringLiteral);
+                                listS.Add(tokenArr.Lexeme);
+                                if (this.lookAhead.TokenType == TokenType.Comma)
+                                {
+                                    this.Match(TokenType.Comma);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            this.Match(TokenType.CorcheteDer);
+                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0);
+                            var id2 = new IdExpression(tipo_arr, token);
+                            EnvironmentManager.Put(token.Lexeme, id2, null);
+                            var symbol2 = EnvironmentManager.Get(token.Lexeme);
+                            return new ArrayStatement(id2, null, listS);
                         }
                         
                     }
@@ -228,6 +253,7 @@ namespace Compilador.Parser
                     var id = new IdExpression(valor, token);
                     EnvironmentManager.Put(token.Lexeme, id, null);
                     var symbol = EnvironmentManager.Get(token.Lexeme);
+
                     var stmt = AssignmentStmt(symbol.Id, index);
                     return stmt;
 
@@ -275,8 +301,8 @@ namespace Compilador.Parser
                     var simbolo2 = EnvironmentManager.Get(arreglo.Lexeme);
                     this.Match(TokenType.identificador);
                     this.Match(TokenType.DoPalabraReservada);
-                    this.Match(TokenType.EndPalabraReservada);
-                    return new ForStatement(simbolo.Id, simbolo2.Id, Stmt());
+                    //this.Match(TokenType.EndPalabraReservada);
+                    return new ForStatement(simbolo.Id, simbolo2.Id, Stmts());
                 case TokenType.HashtagComentario:
                     this.Match(TokenType.HashtagComentario);
                     Stmt();

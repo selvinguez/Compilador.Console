@@ -7,29 +7,34 @@ namespace Compilador.Core.Statements
 {
     public class ForStatement : Statement
     {
-        public ForStatement(IdExpression arreglo, IdExpression numero, Statement statement)
+        public ForStatement(IdExpression identificador, IdExpression arreglo, Statement statement)
         {
             Arreglo = arreglo;
-            Indice = numero;
+            Identificador = identificador;
             Statement = statement;
         }
 
         public IdExpression Arreglo { get; }
 
-        public IdExpression Indice { get; }
+        public IdExpression Identificador { get; }
 
         public Statement Statement { get; }
 
         public override string GenerateCode()
         {
-            throw new NotImplementedException();
+            var code = string.Empty;
+            code += $"foreach(var {Identificador.GenerateCode()} in {Arreglo.GenerateCode()}){{{System.Environment.NewLine}";
+            code += $"{Statement.GenerateCode()}{System.Environment.NewLine}}}";
+            return code;
         }
 
         public override void ValidateSemantic()
         {
-            if (this.Arreglo.GetExpressionType() != Types.Type.Number)
+            var arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0);
+            var arr2 = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number , 0);
+            if (this.Arreglo.GetExpressionType() != arr || this.Arreglo.GetExpressionType() != arr2)
             {
-                throw new ApplicationException($"Expression inside while must be Array");
+                throw new ApplicationException($"Expression inside must be Array of type number or string");
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Compilador.Core.Statements
                 if (symbolType is Types.Array array)
                 {
                     symbolType = array.Of;
-                    code += $"vector<{_typeMapping[symbolType.Lexeme]}> {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
+                    code += $"List<{_typeMapping[symbolType.Lexeme]}> {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                 }
                 else
                 {
