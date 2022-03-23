@@ -165,6 +165,11 @@ namespace Compilador.Parser
             {
                 return null;
             }*/
+            if (this.lookAhead.TokenType == TokenType.ElsePalabraReservada)
+            {
+                //this.Match(TokenType.EndPalabraReservada);
+                return null;
+            }
             if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
             {
                 this.Match(TokenType.EndPalabraReservada);
@@ -258,7 +263,7 @@ namespace Compilador.Parser
                     return stmt;
 
                 case TokenType.IfPalabraReservada:
-                    //EnvironmentManager.PushContext();
+                    EnvironmentManager.PushContext();
                     this.Match(TokenType.IfPalabraReservada);
                     //this.Match(TokenType.ParentesisIzq);
                     var TypedExpression = LogicalOrExpr();
@@ -266,15 +271,16 @@ namespace Compilador.Parser
                     var trueStatement = Stmts();
                     if (this.lookAhead.TokenType != TokenType.ElsePalabraReservada)
                     {
-                       
+                        
                         return new IfStatement(TypedExpression, trueStatement, null);
                     }
+                    
                     this.Match(TokenType.ElsePalabraReservada);
                     var falseStatement = Stmts();
                     //EnvironmentManager.PopContext();
                     return new IfStatement(TypedExpression,trueStatement,falseStatement);
                 case TokenType.WhilePalabraReservada:
-                    //EnvironmentManager.PushContext();
+                    EnvironmentManager.PushContext();
                     this.Match(TokenType.WhilePalabraReservada);
                   
                     TypedExpression = LogicalOrExpr();
@@ -287,8 +293,10 @@ namespace Compilador.Parser
                     //Ocupa Revisión
                     return new PrintStatement(@params);
                 case TokenType.LoopPalabraReservada:
+                    EnvironmentManager.PushContext();
                     this.Match(TokenType.LoopPalabraReservada);
                     this.Match(TokenType.DoPalabraReservada);
+                    //EnvironmentManager.PopContext();
                     //this.Match(TokenType.EndPalabraReservada);
                     return new LoopStatement(Stmts());//arreglar
                 case TokenType.ForPalabraReservada:

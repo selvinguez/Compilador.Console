@@ -24,7 +24,7 @@ namespace Compilador.Core.Statements
         public override string GenerateCode()
         {
             var code = string.Empty;
-            foreach (var symbol in EnvironmentManager.GetSymbolsForCurrentContext())
+            foreach (var symbol in EnvironmentManager.GetSymbolsForBlockContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)

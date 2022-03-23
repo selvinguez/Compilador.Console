@@ -9,14 +9,14 @@ namespace Compilador.Core.Statements
 {
     public class EachStatement : Statement
     {
-        public EachStatement(IdExpression arreiglo, Statement statement)
+        public EachStatement(IdExpression arreglo, Statement statement)
         {
-            this.Arreiglo = arreiglo;
+            this.Arreglo = arreglo;
             Statement = statement;
             this.ValidateSemantic();
         }
 
-       public IdExpression Arreiglo { get;  }
+       public IdExpression Arreglo { get;  }
         public Statement Statement { get; }
 
         public override string GenerateCode()
@@ -26,7 +26,7 @@ namespace Compilador.Core.Statements
 
         public override void ValidateSemantic()
         {
-            if (this.Arreiglo.GetExpressionType() == Types.Type.Number)
+            if (this.Arreglo.GetExpressionType() == Types.Type.Number)
             {
                 throw new ApplicationException($"Expression inside while must be Array");
             }

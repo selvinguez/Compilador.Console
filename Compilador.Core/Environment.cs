@@ -34,6 +34,15 @@ namespace Compilador.Core
             return contexts.Last().GetSymbolsForCurrentContext();
         }
 
+        public static IEnumerable<Symbol> GetSymbolsForBlockContext()
+        {
+            if (!contexts.Any())
+            {
+                return Enumerable.Empty<Symbol>();
+            }
+            return contexts.First().GetSymbolsForBlockContext();
+        }
+
         public static IEnumerable<Symbol> GetSymbolsUnassignedSymbolsInterpretation()
         {
             if (!interpretationContexts.Any())
@@ -125,5 +134,8 @@ namespace Compilador.Core
         }
 
         public IEnumerable<Symbol> GetSymbolsForCurrentContext() => this._symbolTable.Select(x => x.Value);
+
+        public IEnumerable<Symbol> GetSymbolsForBlockContext() => this._symbolTable.Select(x => x.Value);
+
     }
 }
