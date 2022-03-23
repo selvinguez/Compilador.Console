@@ -7,6 +7,7 @@ namespace Compilador.Core.Statements
     {
         private readonly Dictionary<string, string> _typeMapping;
         public Environment env = null;
+        public Environment envFalse = null;
         public IfStatement(TypedExpression expression, Statement trueStatement, Statement falseStatement)
         {
             Expression = expression;
@@ -46,7 +47,21 @@ namespace Compilador.Core.Statements
             code += this.TrueStatement.GenerateCode();
             if (this.FalseStatement != null)
             {
-                code += $"}}else{{{System.Environment.NewLine}{this.FalseStatement.GenerateCode()}{System.Environment.NewLine}";
+                code += $"}}else{{{System.Environment.NewLine}";
+                foreach (var symbol in envFalse.GetSymbolsForCurrentContext())
+                {
+                    var symbolType = symbol.Id.GetExpressionType();
+                    if (symbolType is Types.Array array)
+                    {
+                        symbolType = array.Of;
+                        code += $"List<{_typeMapping[symbolType.Lexeme]}> {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
+                    }
+                    else
+                    {
+                        code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
+                    }
+                }
+                code += $"{this.FalseStatement.GenerateCode()}{System.Environment.NewLine}";
             }
             code += "}";
             return code;
@@ -58,10 +73,18 @@ namespace Compilador.Core.Statements
             {
                 throw new ApplicationException($"Expression inside if must be boolean");
             }
+            if (this.FalseStatement != null)
+            {
+                if (this.envFalse == null)
+                {
+                    this.envFalse = EnvironmentManager.PopContext();
+                }
+            }
             if (this.env == null)
             {
                 this.env = EnvironmentManager.PopContext();
             }
+            
         }
     }
 }

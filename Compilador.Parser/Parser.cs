@@ -274,7 +274,7 @@ namespace Compilador.Parser
                         
                         return new IfStatement(TypedExpression, trueStatement, null);
                     }
-                    
+                    EnvironmentManager.PushContext();
                     this.Match(TokenType.ElsePalabraReservada);
                     var falseStatement = Stmts();
                     //EnvironmentManager.PopContext();
@@ -300,13 +300,35 @@ namespace Compilador.Parser
                     //this.Match(TokenType.EndPalabraReservada);
                     return new LoopStatement(Stmts());//arreglar
                 case TokenType.ForPalabraReservada:
+                    EnvironmentManager.PushContext();
                     this.Match(TokenType.ForPalabraReservada);
                     var iter = this.lookAhead;
-                    var simbolo = EnvironmentManager.Get(iter.Lexeme);
+                    bool getSymbol = false;
+                    Symbol simbolo = null;
+                    try
+                    {
+                        simbolo = EnvironmentManager.Get(iter.Lexeme);
+                    }
+                    catch (Exception)
+                    {
+
+                        
+                    }
+                    
+                    if (simbolo!=null)
+                    {
+                        //simbolo = EnvironmentManager.Get(iter.Lexeme);
+                        throw new ApplicationException($"Symbol {iter.Lexeme} was previously defined in this scope");
+                    }
+                    
                     this.Match(TokenType.identificador);
                     this.Match(TokenType.InPalabraReservada);
                     var arreglo = this.lookAhead;
                     var simbolo2 = EnvironmentManager.Get(arreglo.Lexeme);
+                    var tipo = ((Core.Types.Array)simbolo2.Id.GetExpressionType()).Of;
+                    var idd = new IdExpression(tipo, iter);
+                    EnvironmentManager.Put(iter.Lexeme, idd, null);
+                    simbolo = EnvironmentManager.Get(iter.Lexeme);
                     this.Match(TokenType.identificador);
                     this.Match(TokenType.DoPalabraReservada);
                     //this.Match(TokenType.EndPalabraReservada);
