@@ -130,6 +130,20 @@ namespace Compilador.Parser
                         AssignmentExpr();
                     }*/
                     return Core.Types.Type.String;
+                case TokenType.TruePalabraReservada:
+                    //this.Match(TokenType.StringLiteral);
+                    /*if (this.lookAhead.TokenType != TokenType.identificador)
+                    {
+                        AssignmentExpr();
+                    }*/
+                    return Core.Types.Type.Bool;
+                case TokenType.FalsePalabraReservada:
+                    //this.Match(TokenType.StringLiteral);
+                    /*if (this.lookAhead.TokenType != TokenType.identificador)
+                    {
+                        AssignmentExpr();
+                    }*/
+                    return Core.Types.Type.Bool;
                 case TokenType.GetsPalabraReservada:
                     //this.Match(TokenType.GetsPalabraReservada);
                     return Core.Types.Type.Gets;
@@ -154,7 +168,7 @@ namespace Compilador.Parser
                     {
                         //this.Match( TokenType.CorcheteDer);
                     }
-                    return new Core.Types.Array("[]", TokenType.ComplexType, valor, 0);
+                    return new Core.Types.Array("[]", TokenType.ComplexType, valor, 0, null, null);
                 default:
                     throw new ApplicationException($"Syntax error! Unrecognized type in line: {this.lookAhead.Line} and column: {this.lookAhead.Column}");
             }
@@ -191,6 +205,67 @@ namespace Compilador.Parser
                     
                     this.Match(TokenType.identificador);
                     TypedExpression index = null;
+                    if (this.lookAhead.TokenType == TokenType.Punto)
+                    {
+                       
+                        this.Match(TokenType.Punto);
+                        if (this.lookAhead.TokenType == TokenType.PushPalabraReservada)
+                        {
+                            this.Match(TokenType.PushPalabraReservada);
+                            this.Match(TokenType.ParentesisIzq);
+                            var valorPush = LogicalOrExpr();
+                            this.Match(TokenType.ParentesisDer);
+                            var arrPush = EnvironmentManager.Get(token.Lexeme);
+                            var arrPushType = ((Core.Types.Array)arrPush.Id.GetExpressionType());
+                            if (arrPushType.ListInt!=null)
+                            {
+                                arrPushType.ListInt.Add(int.Parse(valorPush.GenerateCode()));
+                            }
+                            else
+                            {
+                                arrPushType.ListString.Add(valorPush.GenerateCode());
+                            }
+                            return new PushAndDeleteStatement(token, true, valorPush);
+                        }
+                        else if(this.lookAhead.TokenType == TokenType.DeletePalabraReservada)
+                        {
+                            this.Match(TokenType.DeletePalabraReservada);
+                            this.Match(TokenType.ParentesisIzq);
+                            var valorDelete = LogicalOrExpr();
+                            this.Match(TokenType.ParentesisDer);
+                            return new PushAndDeleteStatement(token, false, valorDelete);
+                        }
+                        EnvironmentManager.PushContext();
+                        this.Match(TokenType.EachPalabraReservada);
+                        this.Match(TokenType.DoPalabraReservada);
+                        this.Match(TokenType.pipe);
+                        var eachId = this.lookAhead;
+                        this.Match(TokenType.identificador);
+                        this.Match(TokenType.pipe);
+                        Symbol simboloEach = null;
+                        try
+                        {
+                            simboloEach = EnvironmentManager.Get(eachId.Lexeme);
+                        }
+                        catch (Exception)
+                        {
+
+
+                        }
+
+                        if (simboloEach != null)
+                        {
+                            //simbolo = EnvironmentManager.Get(iter.Lexeme);
+                            throw new ApplicationException($"Symbol {eachId.Lexeme} was previously defined in this scope");
+                        }
+                        var arregloEach = EnvironmentManager.Get(token.Lexeme);
+                        var tipoEachArreglo = ((Core.Types.Array)arregloEach.Id.GetExpressionType()).Of;
+                        var iddEach = new IdExpression(tipoEachArreglo, eachId);
+                        EnvironmentManager.Put(eachId.Lexeme, iddEach, null);
+                        simboloEach = EnvironmentManager.Get(eachId.Lexeme);
+                        return new ForStatement(simboloEach.Id,arregloEach.Id,Stmts());
+                    }
+
                     if (this.lookAhead.TokenType == TokenType.CorcheteIzq)
                     {
                         this.Match(TokenType.CorcheteIzq);
@@ -201,8 +276,8 @@ namespace Compilador.Parser
                     this.Match(TokenType.IgualAsignacion);
                     if (this.lookAhead.TokenType == TokenType.CorcheteIzq)
                     {
-                        List<int> list;
-                        List<string> listS;
+                        List<int> list = null;
+                        List<string> listS = null;
                         this.Match(TokenType.CorcheteIzq);
                         if (this.lookAhead.TokenType == TokenType.NumerosLiteral)
                         {
@@ -222,7 +297,7 @@ namespace Compilador.Parser
                                 }
                             }
                             this.Match(TokenType.CorcheteDer);
-                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number, 0);
+                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number, 0,list,listS);
                             var id2 = new IdExpression(tipo_arr, token);
                             EnvironmentManager.Put(token.Lexeme, id2, null);
                             var symbol2 = EnvironmentManager.Get(token.Lexeme);
@@ -246,7 +321,7 @@ namespace Compilador.Parser
                                 }
                             }
                             this.Match(TokenType.CorcheteDer);
-                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0);
+                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0, list,listS);
                             var id2 = new IdExpression(tipo_arr, token);
                             EnvironmentManager.Put(token.Lexeme, id2, null);
                             var symbol2 = EnvironmentManager.Get(token.Lexeme);
@@ -303,7 +378,6 @@ namespace Compilador.Parser
                     EnvironmentManager.PushContext();
                     this.Match(TokenType.ForPalabraReservada);
                     var iter = this.lookAhead;
-                    bool getSymbol = false;
                     Symbol simbolo = null;
                     try
                     {
@@ -334,12 +408,19 @@ namespace Compilador.Parser
                     //this.Match(TokenType.EndPalabraReservada);
                     return new ForStatement(simbolo.Id, simbolo2.Id, Stmts());
                 case TokenType.HashtagComentario:
+                    var commentToken = this.lookAhead;
                     this.Match(TokenType.HashtagComentario);
-                    Stmt();
-                    return null;//arreglar
+                    return new HashtagComentarioStatement(commentToken, Stmts());//arreglar
+                case TokenType.MultiLinCommentPalabraReservada:
+                    var commentMultiToken = this.lookAhead;
+                    this.Match(TokenType.MultiLinCommentPalabraReservada);
+                    return new MultiComentarioStatement(commentMultiToken, Stmts());
                 case TokenType.BreakPalabraReservada:
                     this.Match(TokenType.BreakPalabraReservada);
                     //Ocupa Revisión
+                    return new BreakStatement();
+                case TokenType.DefPalabraReservada:
+
                     return null;
                 default:
                     return Block();
@@ -359,10 +440,11 @@ namespace Compilador.Parser
                 parametroDef();
                 this.Match(TokenType.ParentesisDer);
             }
-            Stmt();
+            Stmts();
             //this.Match(TokenType.EndPalabraReservada);
 
         }
+        
         private void parametroDef()
         {
             if(this.lookAhead.TokenType == TokenType.identificador)

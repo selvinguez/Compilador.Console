@@ -22,6 +22,8 @@ namespace Compilador.Core.Statements
 
         public List<string> list2 { get; }
 
+        public int Size { get; set; }
+
         public override string GenerateCode()
         {
             var code = string.Empty;
@@ -29,11 +31,11 @@ namespace Compilador.Core.Statements
             {
                 int contador = 0;
                 code += $"{this.Id.GenerateCode()} = new List<int>(){{ ";
-                foreach (var item in list)
+                for (int i = 0; i < Size; i++)
                 {
-                    code += item.ToString();
+                    code += list[i].ToString();
                     contador++;
-                    if (list.Count() != contador)
+                    if (Size != contador)
                     {
                         code += ", ";
                     }
@@ -44,11 +46,11 @@ namespace Compilador.Core.Statements
             {
                 int contador = 0;
                 code += $"{this.Id.GenerateCode()} = new List<string>(){{ ";
-                foreach (var item in list2)
+                for (int i = 0; i < Size; i++)
                 {
-                    code += item.ToString();
+                    code += list2[i].ToString();
                     contador++;
-                    if (list2.Count() != contador)
+                    if (Size != contador)
                     {
                         code += ", ";
                     }
@@ -61,7 +63,14 @@ namespace Compilador.Core.Statements
 
         public override void ValidateSemantic()
         {
-            
+            if (list != null && Size == 0)
+            {
+                Size = list.Count();
+            }
+            else if(list2 != null && Size == 0)
+            {
+                Size = list2.Count();
+            }
         }
     }
 }

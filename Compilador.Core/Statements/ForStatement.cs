@@ -22,7 +22,7 @@ namespace Compilador.Core.Statements
                 { "bool", "bool" },
                 { "gets", "var" }
             };
-            
+            this.ValidateSemantic();
         }
 
         public IdExpression Arreglo { get; }
@@ -57,8 +57,8 @@ namespace Compilador.Core.Statements
 
         public override void ValidateSemantic()
         {
-            var arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0);
-            var arr2 = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number , 0);
+            var arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0,null,null);
+            var arr2 = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number , 0, null, null);
             if (this.Arreglo.GetExpressionType() != arr || this.Arreglo.GetExpressionType() != arr2)
             {
                 throw new ApplicationException($"Expression inside must be Array of type number or string");

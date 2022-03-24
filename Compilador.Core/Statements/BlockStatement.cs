@@ -6,6 +6,7 @@ namespace Compilador.Core.Statements
 {
     public class BlockStatement : Statement
     {
+        public Environment env = null;
         private readonly Dictionary<string, string> _typeMapping;
         public BlockStatement(Statement statement)
         {
@@ -24,7 +25,7 @@ namespace Compilador.Core.Statements
         public override string GenerateCode()
         {
             var code = string.Empty;
-            foreach (var symbol in EnvironmentManager.GetSymbolsForBlockContext())
+            foreach (var symbol in env.GetSymbolsForBlockContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)
@@ -45,6 +46,10 @@ namespace Compilador.Core.Statements
         public override void ValidateSemantic()
         {
             this.Statement?.ValidateSemantic();
+            if (this.env == null)
+            {
+                this.env = EnvironmentManager.getContextBlock();
+            }
         }
     }
 }

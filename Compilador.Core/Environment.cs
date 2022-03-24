@@ -25,6 +25,12 @@ namespace Compilador.Core
             return lastContext;
         }
 
+        public static Environment getContextBlock()
+        {
+            var lastContext = contexts.First();
+            return lastContext;
+        }
+
         public static IEnumerable<Symbol> GetSymbolsForCurrentContext()
         {
             if (!contexts.Any())

@@ -39,7 +39,9 @@ namespace Compilador.Core.Statements
 
         public override string GenerateCode()
         {
-            throw new NotImplementedException();
+            var code = string.Empty;
+            code += $"{((ArrayAccessExpression)_access).GenerateCode()} = {Expression.GenerateCode()}{System.Environment.NewLine}";
+            return code;
         }
     }
 }

@@ -44,6 +44,8 @@ namespace Compilador.Lexer
                 ["chomp"] = TokenType.chompPalabraReservada,
                 ["to_i"] = TokenType.to_iPalabraReservada,
                 ["to_s"] = TokenType.to_SPalabraReservada,
+                ["push"] = TokenType.PushPalabraReservada,
+                ["delete"] = TokenType.DeletePalabraReservada,
             };
         }
 

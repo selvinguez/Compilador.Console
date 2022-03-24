@@ -60,7 +60,9 @@ namespace Compilador.Core
         to_SPalabraReservada,
         BasicType,
         pipe, 
-        ComplexType
+        ComplexType,
+        PushPalabraReservada,
+        DeletePalabraReservada
     }
    
 }
