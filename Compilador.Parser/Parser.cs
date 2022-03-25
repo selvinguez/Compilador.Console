@@ -410,7 +410,7 @@ namespace Compilador.Parser
                 case TokenType.HashtagComentario:
                     var commentToken = this.lookAhead;
                     this.Match(TokenType.HashtagComentario);
-                    return new HashtagComentarioStatement(commentToken, Stmts());//arreglar
+                    return new HashtagComentarioStatement(commentToken);//arreglar
                 case TokenType.MultiLinCommentPalabraReservada:
                     var commentMultiToken = this.lookAhead;
                     this.Match(TokenType.MultiLinCommentPalabraReservada);

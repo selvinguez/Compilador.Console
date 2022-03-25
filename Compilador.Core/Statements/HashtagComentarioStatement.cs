@@ -11,11 +11,9 @@ namespace Compilador.Core.Statements
     {
         public Token Token { get; }
 
-        public Statement Statement { get; }
-        public HashtagComentarioStatement(Token token, Statement statement)
+        public HashtagComentarioStatement(Token token)
         {
             Token = token; 
-            Statement = statement;
 
         }
         public override string GenerateCode()
@@ -24,7 +22,6 @@ namespace Compilador.Core.Statements
             var reemplazo = "//";
             reemplazo += Token.Lexeme.Substring(1);
             code += $"{reemplazo}{System.Environment.NewLine}";
-            code += this.Statement.GenerateCode();
             code += System.Environment.NewLine;
             return code;
         }
