@@ -21,6 +21,8 @@ namespace Compilador.Core.Types
 
         public static Type Gets => new Type("gets", TokenType.BasicType);
 
+        public static Type T_Type => new Type("T", TokenType.BasicType);
+
         public bool Equals(Type other)
         {
             if (ReferenceEquals(null, other)) return false;

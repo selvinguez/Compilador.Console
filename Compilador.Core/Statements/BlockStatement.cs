@@ -16,7 +16,8 @@ namespace Compilador.Core.Statements
                 { "number", "int" },
                 { "string", "string" },
                 { "bool", "bool" },
-                { "gets", "var" }
+                { "gets", "var" },
+                { "T", "dynamic" }
             };
             this.ValidateSemantic();
         }
@@ -35,7 +36,10 @@ namespace Compilador.Core.Statements
                 }
                 else
                 {
-                    code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
+                    if (symbolType != Types.Type.T_Type)
+                    {
+                        code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
+                    }
                 }
             }
 

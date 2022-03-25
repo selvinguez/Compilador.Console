@@ -420,18 +420,36 @@ namespace Compilador.Parser
                     //Ocupa Revisión
                     return new BreakStatement();
                 case TokenType.DefPalabraReservada:
-
-                    return null;
+                    if (EnvironmentManager.contexts.Count() == 1)
+                    {
+                        this.Match(TokenType.DefPalabraReservada);
+                        token = this.lookAhead;
+                        var valorMet = Core.Types.Type.T_Type;
+                        var idMet = new IdExpression(valorMet, token);
+                        EnvironmentManager.Put(token.Lexeme, idMet, null);
+                        EnvironmentManager.PushContext();
+                        this.Match(TokenType.identificador);
+                        var idexpressions = new List<IdExpression>();
+                        if (this.lookAhead.TokenType == TokenType.ParentesisIzq)
+                        {
+                            this.Match(TokenType.ParentesisIzq);
+                            idexpressions = (List<IdExpression>)parametroDef();
+                            this.Match(TokenType.ParentesisDer);
+                        }
+                        return new MethodStatement(idMet,idexpressions, Stmts());
+                    }
+                    throw new ApplicationException("Methods can't be declared here.");
                 default:
                     return Block();
             }
         }
         private void Methods()
         {
-            if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
+            /*if (this.lookAhead.TokenType == TokenType.EndPalabraReservada)
             {
                 return;
-            }
+            }*/
+            EnvironmentManager.PushContext();
             this.Match(TokenType.DefPalabraReservada);
             this.Match(TokenType.identificador);
             if(this.lookAhead.TokenType == TokenType.ParentesisIzq)
@@ -444,18 +462,25 @@ namespace Compilador.Parser
             //this.Match(TokenType.EndPalabraReservada);
 
         }
-        
-        private void parametroDef()
+         
+        private IList<IdExpression> parametroDef()
         {
+            var idexpressions = new List<IdExpression>();
             if(this.lookAhead.TokenType == TokenType.identificador)
             {
+                var identificador = this.lookAhead;
                 this.Match(TokenType.identificador);
-                if(this.lookAhead.TokenType== TokenType.Comma)
+                var valor = Core.Types.Type.T_Type;
+                var id = new IdExpression(valor, identificador);
+                EnvironmentManager.Put(identificador.Lexeme, id, null);
+                idexpressions.Add(id);
+                if (this.lookAhead.TokenType == TokenType.Comma)
                 {
                     this.Match(TokenType.Comma);
-                    parametroDef();
+                    idexpressions.AddRange(parametroDef());
                 }
             }
+            return idexpressions;
         }
         private IEnumerable<TypedExpression> Params()
         {

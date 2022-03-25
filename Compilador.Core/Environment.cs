@@ -7,7 +7,7 @@ namespace Compilador.Core
 {
     public static class EnvironmentManager
     {
-        private static List<Environment> contexts = new List<Environment>();
+        public static List<Environment> contexts = new List<Environment>();
         private static List<Environment> interpretationContexts = new List<Environment>();
 
         public static Environment PushContext()
