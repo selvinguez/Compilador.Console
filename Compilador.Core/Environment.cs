@@ -72,10 +72,39 @@ namespace Compilador.Core
 
         public static void Put(string lexeme, IdExpression id, dynamic startValue)
         {
+            int conteo = 0;
+            foreach (var ctx in contexts)
+            {
+                var symbol = ctx.Get(lexeme);
+                if (symbol != null)
+                {
+                    return;
+                }
+                if (conteo == contexts.Count-1)
+                {
+                    break;
+                }
+                conteo++;
+                
+            }
             contexts.Last().Put(lexeme, id, startValue);
         }
 
         public static Symbol Get(string lexeme)
+        {
+            for (int i = contexts.Count - 1; i >= 0; i--)
+            {
+                var symbol = contexts[i].Get(lexeme);
+                if (symbol != null)
+                {
+                    return symbol;
+                }
+            }
+
+            throw new ApplicationException($"Symbol {lexeme} doesn't exist in current context");
+            //return null;
+        }
+        public static Symbol PutCheckPrevious(string lexeme)
         {
             for (int i = contexts.Count - 1; i >= 0; i--)
             {

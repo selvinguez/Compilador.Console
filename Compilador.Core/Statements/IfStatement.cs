@@ -30,7 +30,7 @@ namespace Compilador.Core.Statements
         public override string GenerateCode()
         {
             var code = $"if({this.Expression.GenerateCode()}){{ {System.Environment.NewLine}";
-            foreach (var symbol in env.GetSymbolsForCurrentContext())
+            /*foreach (var symbol in env.GetSymbolsForCurrentContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)
@@ -42,13 +42,13 @@ namespace Compilador.Core.Statements
                 {
                     code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                 }
-            }
+            }*/
             //EnvironmentManager.PopContext();
             code += this.TrueStatement.GenerateCode();
             if (this.FalseStatement != null)
             {
                 code += $"}}else{{{System.Environment.NewLine}";
-                foreach (var symbol in envFalse.GetSymbolsForCurrentContext())
+                /*foreach (var symbol in envFalse.GetSymbolsForCurrentContext())
                 {
                     var symbolType = symbol.Id.GetExpressionType();
                     if (symbolType is Types.Array array)
@@ -60,7 +60,7 @@ namespace Compilador.Core.Statements
                     {
                         code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                     }
-                }
+                }*/
                 code += $"{this.FalseStatement.GenerateCode()}{System.Environment.NewLine}";
             }
             code += "}";

@@ -219,11 +219,33 @@ namespace Compilador.Parser
                             var arrPushType = ((Core.Types.Array)arrPush.Id.GetExpressionType());
                             if (arrPushType.ListInt!=null)
                             {
-                                arrPushType.ListInt.Add(int.Parse(valorPush.GenerateCode()));
+                                if (int.TryParse(valorPush.GenerateCode(), out int val))
+                                {
+                                    arrPushType.ListInt.Add(val);
+                                }
+                                else
+                                {
+                                    arrPushType.ListInt.Add(0);
+                                }
+                                
+                            }
+                            else if(arrPushType.ListString != null)
+                            {
+                                arrPushType.ListString.Add(valorPush.GenerateCode());
                             }
                             else
                             {
-                                arrPushType.ListString.Add(valorPush.GenerateCode());
+                                arrPushType.ListInt = new List<int>();
+                                if (int.TryParse(valorPush.GenerateCode(), out int val))
+                                {
+                                    arrPushType.ListInt.Add(val);
+                                }
+                                else
+                                {
+                                    arrPushType.ListInt.Add(0);
+                                }
+                                
+
                             }
                             return new PushAndDeleteStatement(token, true, valorPush);
                         }
@@ -303,7 +325,7 @@ namespace Compilador.Parser
                             var symbol2 = EnvironmentManager.Get(token.Lexeme);
                             return new ArrayStatement(id2, list, null);
                         }
-                        else
+                        else if (this.lookAhead.TokenType == TokenType.StringLiteral)
                         {
                             listS = new List<string>();
                             while (true)
@@ -326,6 +348,15 @@ namespace Compilador.Parser
                             EnvironmentManager.Put(token.Lexeme, id2, null);
                             var symbol2 = EnvironmentManager.Get(token.Lexeme);
                             return new ArrayStatement(id2, null, listS);
+                        }
+                        else if (this.lookAhead.TokenType == TokenType.CorcheteDer)
+                        {
+                            this.Match(TokenType.CorcheteDer);
+                            var tipo_arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number, 0, list, listS);
+                            var id2 = new IdExpression(tipo_arr, token);
+                            EnvironmentManager.Put(token.Lexeme, id2, null);
+                            var symbol2 = EnvironmentManager.Get(token.Lexeme);
+                            return new ArrayStatement(id2, null, null);
                         }
                         
                     }
@@ -637,6 +668,14 @@ namespace Compilador.Parser
                     token = this.lookAhead;
                     this.Match(TokenType.GetsPalabraReservada);
                     return new ConstantExpression (Core.Types.Type.Gets, token);
+                case TokenType.SpecialString:
+                    token = this.lookAhead;
+                    this.Match(TokenType.SpecialString);
+                    var getHT = token.Lexeme.IndexOf("#") + 2;
+                    var getCorDer = token.Lexeme.IndexOf('}');
+                    var resultado = token.Lexeme.Substring(getHT, getCorDer - getHT);
+                    var getSymbolString = EnvironmentManager.Get(resultado);
+                    return new ConstantExpression(Core.Types.Type.String, token);
                 case TokenType.CorcheteDer:
                     token = this.lookAhead;
                     this.Match(TokenType.CorcheteDer);

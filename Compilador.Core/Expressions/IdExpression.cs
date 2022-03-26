@@ -10,13 +10,18 @@ namespace Compilador.Core.Expressions
         public IdExpression(Type type, Token token)
             : base(type, token)
         {
+            declared = false;
             _typeMapping = new Dictionary<string, string>
             {
                 { "number", "int" },
                 { "string", "string" },
                 { "bool", "bool" },
+                { "gets", "var" },
+                { "T", "dynamic" },
+                { "[]", "var" }
             };
         }
+        public bool declared { get; set; }
 
         public override string GenerateCode()
         {
@@ -31,6 +36,11 @@ namespace Compilador.Core.Expressions
                 }
             }
             return $"{_typeMapping[type.Lexeme]} {Token.Lexeme}";*/
+            if (!declared)
+            {
+                declared=true;
+                return $"{_typeMapping[type.Lexeme]} {Token.Lexeme}";
+            }
             return Token.Lexeme;
         }
         public override Type GetExpressionType()

@@ -34,8 +34,8 @@ namespace Compilador.Core.Statements
         public override string GenerateCode()
         {
             var code = string.Empty;
-            code += $"foreach(var {Identificador.GenerateCode()} in {Arreglo.GenerateCode()}){{{System.Environment.NewLine}";
-            foreach (var symbol in env.GetSymbolsForCurrentContext())
+            code += $"foreach({Identificador.GenerateCode()} in {Arreglo.GenerateCode()}){{{System.Environment.NewLine}";
+            /*foreach (var symbol in env.GetSymbolsForCurrentContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)
@@ -50,7 +50,7 @@ namespace Compilador.Core.Statements
                         code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                     } 
                 }
-            }
+            }*/
             code += $"{Statement.GenerateCode()}{System.Environment.NewLine}}}";
             return code;
         }

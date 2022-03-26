@@ -20,6 +20,30 @@ namespace Compilador.Core.Expressions
                 { (Type.Number, Type.Number, TokenType.Multiplicacion), Type.Number },
                 { (Type.Number, Type.Number, TokenType.Division), Type.Number },
                 { (Type.Number, Type.Number, TokenType.Porcentaje), Type.Number },
+                //number gets
+                { (Type.Number, Type.Gets, TokenType.Mas), Type.Number },
+                { (Type.Number, Type.Gets, TokenType.Menos), Type.Number },
+                { (Type.Number, Type.Gets, TokenType.Multiplicacion), Type.Number },
+                { (Type.Number, Type.Gets, TokenType.Division), Type.Number },
+                { (Type.Number, Type.Gets, TokenType.Porcentaje), Type.Number },
+                //number dynamic
+                { (Type.Number, Type.T_Type, TokenType.Mas), Type.Number },
+                { (Type.Number, Type.T_Type, TokenType.Menos), Type.Number },
+                { (Type.Number, Type.T_Type, TokenType.Multiplicacion), Type.Number },
+                { (Type.Number, Type.T_Type, TokenType.Division), Type.Number },
+                { (Type.Number, Type.T_Type, TokenType.Porcentaje), Type.Number },
+                //gets number
+                { (Type.Gets, Type.Number, TokenType.Mas), Type.Number },
+                { (Type.Gets, Type.Number, TokenType.Menos), Type.Number },
+                { (Type.Gets, Type.Number, TokenType.Multiplicacion), Type.Number },
+                { (Type.Gets, Type.Number, TokenType.Division), Type.Number },
+                { (Type.Gets, Type.Number, TokenType.Porcentaje), Type.Number },
+                //dynamic number
+                { (Type.T_Type, Type.Number, TokenType.Mas), Type.Number },
+                { (Type.T_Type, Type.Number, TokenType.Menos), Type.Number },
+                { (Type.T_Type, Type.Number, TokenType.Multiplicacion), Type.Number },
+                { (Type.T_Type, Type.Number, TokenType.Division), Type.Number },
+                { (Type.T_Type, Type.Number, TokenType.Porcentaje), Type.Number },
             };
         }
 

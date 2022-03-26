@@ -21,7 +21,7 @@ namespace Compilador.Core.Statements
         }
         public override void ValidateSemantic()
         {
-            if (this.Id.GetExpressionType() != Expression.GetExpressionType())
+            if (this.Id.GetExpressionType() != Expression.GetExpressionType() && this.Id.GetExpressionType() != Types.Type.Gets && this.Id.GetExpressionType() != Types.Type.T_Type && Expression.GetExpressionType() != Types.Type.Gets && Expression.GetExpressionType() != Types.Type.T_Type)
             {
                 throw new ApplicationException($"Type {Expression.GetExpressionType()} is not assignable to {Id.GetExpressionType()}");
             }

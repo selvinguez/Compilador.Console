@@ -26,7 +26,7 @@ namespace Compilador.Core.Statements
         public override string GenerateCode()
         {
             var code = string.Empty;
-            foreach (var symbol in env.GetSymbolsForBlockContext())
+            /*foreach (var symbol in env.GetSymbolsForBlockContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)
@@ -41,7 +41,7 @@ namespace Compilador.Core.Statements
                         code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                     }
                 }
-            }
+            }*/
 
             code += this.Statement.GenerateCode();
             return code;

@@ -216,6 +216,11 @@ namespace Compilador.Lexer
 
                             //}
                         }
+                        if (lexeme.ToString().Contains("#{"))
+                        {
+                            lexeme.Append(currentChar);
+                            return BuildToken(lexeme.ToString(), TokenType.SpecialString);
+                        }
                         lexeme.Append(currentChar);
                         return BuildToken(lexeme.ToString(), TokenType.StringLiteral);
                     case '#':

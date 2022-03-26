@@ -31,7 +31,7 @@ namespace Compilador.Core.Statements
 
             var code = $"while({this.Expression.GenerateCode()}){{ {System.Environment.NewLine}";
 
-            foreach (var symbol in env.GetSymbolsForCurrentContext())
+            /*foreach (var symbol in env.GetSymbolsForCurrentContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)
@@ -43,7 +43,7 @@ namespace Compilador.Core.Statements
                 {
                     code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                 }
-            }
+            }*/
             //EnvironmentManager.PopContext();
 
             code += this.Statement.GenerateCode();

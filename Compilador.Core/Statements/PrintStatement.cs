@@ -19,8 +19,13 @@ namespace Compilador.Core.Statements
         public override string GenerateCode()
         {
             var code = "Console.Writeline(";
+            
             foreach (var param in this.Parameters)
             {
+                if (param.GenerateCode().Contains('{'))
+                {
+                    code += "$";
+                }
                 code += $"{param.GenerateCode()}";
             }
 

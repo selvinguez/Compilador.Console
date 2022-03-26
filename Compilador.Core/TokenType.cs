@@ -62,7 +62,8 @@ namespace Compilador.Core
         pipe, 
         ComplexType,
         PushPalabraReservada,
-        DeletePalabraReservada
+        DeletePalabraReservada,
+        SpecialString
     }
    
 }

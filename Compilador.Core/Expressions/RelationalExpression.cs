@@ -16,6 +16,18 @@ namespace Compilador.Core.Expressions
             {
                 { (Type.Number, Type.Number),  Type.Bool},
                 { (Type.String, Type.String),  Type.Bool},
+                { (Type.Number, Type.T_Type),  Type.Bool},
+                { (Type.String, Type.T_Type),  Type.Bool},
+                { (Type.Gets, Type.T_Type),  Type.Bool},
+                { (Type.T_Type, Type.T_Type),  Type.Bool},
+                { (Type.T_Type, Type.Number),  Type.Bool},
+                { (Type.T_Type, Type.String),  Type.Bool},
+                { (Type.T_Type, Type.Gets),  Type.Bool},
+                { (Type.Gets, Type.Gets),  Type.Bool},
+                { (Type.Gets, Type.Number),  Type.Bool},
+                { (Type.Gets, Type.String),  Type.Bool},
+                { (Type.Number, Type.Gets),  Type.Bool},
+                { (Type.String, Type.Gets),  Type.Bool},
             };
         }
 

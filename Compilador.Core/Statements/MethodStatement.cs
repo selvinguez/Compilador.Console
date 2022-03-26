@@ -38,14 +38,14 @@ namespace Compilador.Core.Statements
         {
             var methodType = MethodId.GetExpressionType();
             var code = string.Empty;
-            code += $"public {_typeMapping[methodType.Lexeme]} {MethodId.GenerateCode()}(";
+            code += $"public {MethodId.GenerateCode()}(";
             int conteo = 0;
             if (IdExpressions!=null)
             {
                 foreach (var item in IdExpressions)
                 {
                     var itemType = item.GetExpressionType();
-                    code += $"{_typeMapping[itemType.Lexeme]} {item.GenerateCode()}";
+                    code += $"{item.GenerateCode()}";
                     conteo++;
                     if (conteo != IdExpressions.Count())
                     {
@@ -55,7 +55,7 @@ namespace Compilador.Core.Statements
             }
             
             code += $"){System.Environment.NewLine}{{{System.Environment.NewLine}";
-            foreach (var symbol in env.GetSymbolsForCurrentContext())
+            /*foreach (var symbol in env.GetSymbolsForCurrentContext())
             {
                 var symbolType = symbol.Id.GetExpressionType();
                 if (symbolType is Types.Array array)
@@ -70,7 +70,7 @@ namespace Compilador.Core.Statements
                         code += $"{_typeMapping[symbolType.Lexeme]} {symbol.Id.Token.Lexeme};{System.Environment.NewLine}";
                     }
                 }
-            }
+            }*/
             code += this.Statement.GenerateCode();
             code += System.Environment.NewLine;
             code += $"return null{System.Environment.NewLine}";

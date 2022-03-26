@@ -15,6 +15,12 @@ namespace Compilador.Core.Expressions
         {
             if (this.type == Type.String)
             {
+                if (Token.Lexeme.Contains("#"))
+                {
+                    var getHT = Token.Lexeme.IndexOf('#');
+                    var newLex = Token.Lexeme.Remove(getHT, 1);
+                    Token.Lexeme = newLex;
+                }
                 return Token.Lexeme.Replace("'", "\"");
             }
             if (this.type == Type.Gets)
