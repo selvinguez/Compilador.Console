@@ -9,6 +9,10 @@ namespace Compilador.Core.Types
 
         public int dynamicParameters { get; set; }
 
+        public List<int> ListInt { get; set; }
+
+        public List<string> ListString { get; set; }
+
         public Type(string lexeme, TokenType tokenType)
         {
             Lexeme = lexeme;

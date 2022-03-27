@@ -51,11 +51,20 @@ namespace Compilador.Core.Statements
                     throw new ApplicationException($"Type {TypedExpression.GetExpressionType()} is not assignable to {array}");
                 }
             }
+            else if(symbol.Id.GetExpressionType() == Core.Types.Type.T_Type)
+            {
+                
+            }
             else
             {
                 throw new ApplicationException($"Expression inside must be Array");
             }
-            var arreglo = ((Core.Types.Array)symbol.Id.GetExpressionType());
+            var arreglo = Core.Types.Type.T_Type;
+            if (symbol.Id.GetExpressionType() != Core.Types.Type.T_Type)
+            {
+                arreglo = ((Core.Types.Array)symbol.Id.GetExpressionType());
+            }
+            
             if (!Action)
             {
                 if (arreglo.ListInt != null)

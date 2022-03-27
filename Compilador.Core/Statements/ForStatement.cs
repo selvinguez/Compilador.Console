@@ -57,11 +57,19 @@ namespace Compilador.Core.Statements
 
         public override void ValidateSemantic()
         {
-            var arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0,null,null);
-            var arr2 = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number , 0, null, null);
+            var arr = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.String, 0, null, null);
+            var arr2 = new Core.Types.Array("[]", TokenType.ComplexType, Core.Types.Type.Number, 0, null, null);
             if (this.Arreglo.GetExpressionType() != arr || this.Arreglo.GetExpressionType() != arr2)
             {
-                throw new ApplicationException($"Expression inside must be Array of type number or string");
+                if (this.Arreglo.GetExpressionType() == Core.Types.Type.T_Type)
+                {
+
+                }
+                else
+                {
+                    throw new ApplicationException($"Expression inside must be Array of type number or string");
+                }
+                
             }
             if (this.env == null)
             {

@@ -216,7 +216,12 @@ namespace Compilador.Parser
                             var valorPush = LogicalOrExpr();
                             this.Match(TokenType.ParentesisDer);
                             var arrPush = EnvironmentManager.Get(token.Lexeme);
-                            var arrPushType = ((Core.Types.Array)arrPush.Id.GetExpressionType());
+                            var arrPushType = Core.Types.Type.T_Type;
+                            if (arrPush.Id.GetExpressionType() != Core.Types.Type.T_Type)
+                            {
+                                arrPushType = ((Core.Types.Array)arrPush.Id.GetExpressionType());
+                            }
+                            
                             if (arrPushType.ListInt!=null)
                             {
                                 if (int.TryParse(valorPush.GenerateCode(), out int val))
@@ -281,7 +286,12 @@ namespace Compilador.Parser
                             throw new ApplicationException($"Symbol {eachId.Lexeme} was previously defined in this scope");
                         }
                         var arregloEach = EnvironmentManager.Get(token.Lexeme);
-                        var tipoEachArreglo = ((Core.Types.Array)arregloEach.Id.GetExpressionType()).Of;
+                        var tipoEachArreglo = Core.Types.Type.T_Type;
+                        if (arregloEach.Id.GetExpressionType() != Core.Types.Type.T_Type)
+                        {
+                            tipoEachArreglo = ((Core.Types.Array)arregloEach.Id.GetExpressionType()).Of;
+                        }
+                        
                         var iddEach = new IdExpression(tipoEachArreglo, eachId);
                         EnvironmentManager.Put(eachId.Lexeme, iddEach, null);
                         simboloEach = EnvironmentManager.Get(eachId.Lexeme);

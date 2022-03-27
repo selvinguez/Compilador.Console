@@ -227,12 +227,15 @@ namespace Compilador.Lexer
                         lexeme.Append(currentChar);
                         currentChar = GetNextChar();
                         //final del archivo no esta considerado
-                        while (currentChar.ToString() != "\n")
+                        while (currentChar.ToString() != "\n" && currentChar.ToString() != "\0")
                         {
                             lexeme.Append(currentChar);
                             currentChar = GetNextChar();
                         }
-                       lexeme.Append(currentChar);
+                        if (currentChar.ToString() != "\0")
+                        {
+                            lexeme.Append(currentChar);
+                        }
                         return BuildToken(lexeme.ToString(), TokenType.HashtagComentario);
 
                     case '&':
