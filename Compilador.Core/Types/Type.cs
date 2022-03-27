@@ -7,6 +7,8 @@ namespace Compilador.Core.Types
 
         public TokenType TokenType { get; set; }
 
+        public int dynamicParameters { get; set; }
+
         public Type(string lexeme, TokenType tokenType)
         {
             Lexeme = lexeme;

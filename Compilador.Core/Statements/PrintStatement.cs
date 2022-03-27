@@ -35,10 +35,10 @@ namespace Compilador.Core.Statements
 
         public override void ValidateSemantic()
         {
-            if (Parameters.Any(x => x.GetExpressionType() != Types.Type.String))
+            /*if (Parameters.Any(x => x.GetExpressionType() != Types.Type.String))
             {
                 throw new ApplicationException("All parameters for print method must be string");
-            }
+            }*/
         }
     }
 }

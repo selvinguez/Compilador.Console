@@ -294,6 +294,25 @@ namespace Compilador.Parser
                         index = LogicalOrExpr();
                         this.Match(TokenType.CorcheteDer);
                     }
+                    if (this.lookAhead.TokenType == TokenType.ParentesisIzq)
+                    {
+                        this.Match(TokenType.ParentesisIzq);
+                        var defId = EnvironmentManager.Get(token.Lexeme);
+                        if (defId.Id.GetExpressionType() == Core.Types.Type.T_Type)
+                        {
+                            var tokenTipos = parametroDefUsing();
+                            this.Match(TokenType.ParentesisDer);
+                            if (defId.Id.GetExpressionType().dynamicParameters != tokenTipos.Count)
+                            {
+                                throw new ApplicationException("There is no implementation of the method with those parameters");
+                            }
+                            return new MethodUsingStatement(token.Lexeme, (List<Token>)tokenTipos);
+                        }
+                        else
+                        {
+                            throw new ApplicationException($"The identifier {token.Lexeme} isn't a method");
+                        }
+                    }
 
                     this.Match(TokenType.IgualAsignacion);
                     if (this.lookAhead.TokenType == TokenType.CorcheteIzq)
@@ -467,6 +486,7 @@ namespace Compilador.Parser
                             idexpressions = (List<IdExpression>)parametroDef();
                             this.Match(TokenType.ParentesisDer);
                         }
+                        idMet.GetExpressionType().dynamicParameters = idexpressions.Count;
                         return new MethodStatement(idMet,idexpressions, Stmts());
                     }
                     throw new ApplicationException("Methods can't be declared here.");
@@ -510,6 +530,29 @@ namespace Compilador.Parser
                     this.Match(TokenType.Comma);
                     idexpressions.AddRange(parametroDef());
                 }
+            }
+            return idexpressions;
+        }
+        private IList<Token> parametroDefUsing()
+        {
+            var idexpressions = new List<Token>();
+            if (this.lookAhead.TokenType == TokenType.identificador || this.lookAhead.TokenType == TokenType.StringLiteral || this.lookAhead.TokenType == TokenType.NumerosLiteral || this.lookAhead.TokenType == TokenType.TruePalabraReservada || this.lookAhead.TokenType == TokenType.FalsePalabraReservada)
+            {
+                if (this.lookAhead.TokenType == TokenType.identificador)
+                {
+                    EnvironmentManager.Get(this.lookAhead.Lexeme);
+                }
+                idexpressions.Add(this.lookAhead);
+                this.Match(this.lookAhead.TokenType);
+                if (this.lookAhead.TokenType == TokenType.Comma)
+                {
+                    this.Match(TokenType.Comma);
+                    idexpressions.AddRange(parametroDefUsing());
+                }
+            }
+            else
+            {
+                throw new ApplicationException("Invalid Parameter entered");
             }
             return idexpressions;
         }
