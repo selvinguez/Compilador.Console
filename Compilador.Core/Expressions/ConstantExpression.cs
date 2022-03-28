@@ -25,7 +25,7 @@ namespace Compilador.Core.Expressions
             }
             if (this.type == Type.Gets)
             {
-                return "Console.Readline()";
+                return "Console.ReadLine()";
             }
             return Token.Lexeme;
         }

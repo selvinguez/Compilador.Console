@@ -18,7 +18,7 @@ namespace Compilador.Core.Statements
 
         public override string GenerateCode()
         {
-            var code = "Console.Writeline(";
+            var code = "Console.WriteLine(";
             
             foreach (var param in this.Parameters)
             {
